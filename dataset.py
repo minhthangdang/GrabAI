@@ -1,4 +1,5 @@
 # This dataset.py file is used to group images into categories
+# The images are retrieved from https://ai.stanford.edu/~jkrause/cars/car_dataset.html
 import argparse # required for parser
 import csv # required for csv reader
 import os # required for files/dirs manipulation
