@@ -1,5 +1,5 @@
 # USAGE
-# python train.py --dir car_ims --annos annotations.csv --classnames class_names.csv
+# python dataset.py --dir car_ims --annos annotations.csv --classnames class_names.csv
 
 # This dataset.py file is used to group images into categories
 # The images are retrieved from https://ai.stanford.edu/~jkrause/cars/car_dataset.html
