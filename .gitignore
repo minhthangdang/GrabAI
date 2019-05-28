@@ -1,2 +1,3 @@
 *.tgz
 dataset/*
+car_ims/*

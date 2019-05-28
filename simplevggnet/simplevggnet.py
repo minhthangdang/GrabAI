@@ -12,7 +12,7 @@ from keras import backend as K
 
 class SimpleVGGNet:
     @staticmethod
-    def build(width, height, depth, classes):
+    def build(width, height, depth, classes, finalAct="softmax"):
         # initialize the model along with the input shape to be
         # "channels last" and the channels dimension itself
         model = Sequential()
@@ -56,7 +56,7 @@ class SimpleVGGNet:
 
         # softmax classifier
         model.add(Dense(classes))
-        model.add(Activation("softmax"))
+        model.add(Activation(finalAct))
 
         # return the constructed network architecture
         return model

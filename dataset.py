@@ -1,9 +1,13 @@
+# USAGE
+# python train.py --dir car_ims --annos annotations.csv --classnames class_names.csv
+
 # This dataset.py file is used to group images into categories
 # The images are retrieved from https://ai.stanford.edu/~jkrause/cars/car_dataset.html
 import argparse # required for parser
 import csv # required for csv reader
 import os # required for files/dirs manipulation
 import shutil # required for files/dirs manipulation
+import cv2 # opencv
 
 # construct the argument parser
 ap = argparse.ArgumentParser()
@@ -34,27 +38,39 @@ makes = ['Acura', 'AM General', 'Aston Martin', 'Audi', 'Bentley', 'BMW', 'Bugat
 with open(args['annos']) as csv_file:
 	csv_reader = csv.reader(csv_file, delimiter=',')
 	for row in csv_reader:
-		file_name = row[0] # the relative path to the image file
+		# the relative path to the image file
+		file_name = row[0]
 		print(file_name)
+
+		# extract the car object based on provided bounding box
+		image = cv2.imread(file_name)
+		x1 = int(row[1])
+		y1 = int(row[2])
+		x2 = int(row[3])
+		y2 = int(row[4])
+		car_image = image[y1:y2, x1:x2, :]
+
 		# get file name from format car_ims/xxx.jpg
 		pos = file_name.rfind("/")
 		file_name = file_name[pos+1:]
+
 		# get class name
 		class_index = int(row[5]) - 1
 		class_name = class_names[class_index]
+
 		# remove year from class name
 		pos = class_name.rfind(" ")
 		class_name = class_name[0:pos]
+
 		# create dir for each class (if not already created)
 		# first we split class name into make_model format
 		for make in makes:
 			if class_name.startswith(make):
 				class_name = class_name.replace(make, make+"_")
-		classDir = args['dir'] + "/" + class_name
+		# create dir
+		classDir = "dataset/" + class_name
 		if not os.path.exists(classDir):
 			os.mkdir(classDir)
-		# move file to the above dir
-		sourcePath = args['dir'] + "/" + file_name
-		destPath = classDir + "/" + file_name
-		if os.path.exists(sourcePath):
-			os.rename(sourcePath, destPath)
+
+		# save car_image file to the above dir
+		cv2.imwrite(classDir + "/" + file_name, car_image)
