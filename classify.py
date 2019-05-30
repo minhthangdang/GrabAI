@@ -9,7 +9,7 @@ import argparse
 import imutils
 import pickle
 import cv2
-import os
+from config import config
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -26,7 +26,7 @@ image = cv2.imread(args["image"])
 output = imutils.resize(image, width=400)
  
 # pre-process the image for classification
-image = cv2.resize(image, (96, 96))
+image = cv2.resize(image, (config.IMAGE_DIMS[1], config.IMAGE_DIMS[0]))
 image = image.astype("float") / 255.0
 image = img_to_array(image)
 image = np.expand_dims(image, axis=0)
@@ -43,8 +43,6 @@ print("[INFO] classifying image...")
 proba = model.predict(image)[0]
 print(np.argsort(proba))
 idxs = np.argsort(proba)[::-1][:2]
-print(idxs)
-quit(1)
 
 # loop over the indexes of the high confidence class labels
 for (i, j) in enumerate(idxs):

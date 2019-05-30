@@ -7,6 +7,7 @@ import cv2 # opencv
 from keras.preprocessing.image import img_to_array # convert image to array
 import numpy as np # numpy
 from sklearn.preprocessing import MultiLabelBinarizer # required for labels binarizing
+import tensorflow as tf
 
 # this will build data, labels and mlb from disk
 def build_data_and_labels():
@@ -60,6 +61,8 @@ def build_data_and_labels():
     random.shuffle(image_paths) # randomize for better training
 
     print("[INFO] building data and labels...")
+    # VGG Mean as used by tensorflow https://github.com/machrisaa/tensorflow-vgg/blob/master/vgg16.py
+    vgg_mean = np.array([103.939, 116.779, 123.68], dtype=np.float32)
     count = 0
     for image_path in image_paths:
         count += 1
@@ -67,6 +70,7 @@ def build_data_and_labels():
         # build data
         image = cv2.imread(image_path)
         image = cv2.resize(image, (config.IMAGE_DIMS[1], config.IMAGE_DIMS[0]))
+        image = image - vgg_mean # mean subtraction for VGG
         image = img_to_array(image)
         data.append(image)
 

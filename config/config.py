@@ -22,7 +22,7 @@ MAKES = ['Acura', 'AM General', 'Aston Martin', 'Audi', 'Bentley', 'BMW', 'Bugat
 # image dimensions for training
 IMAGE_DIMS = (224, 224, 3)
 # number of EPOCHS
-EPOCHS = 20
+EPOCHS = 10
 # learning rate
 LR = 0.001
 # batch size
