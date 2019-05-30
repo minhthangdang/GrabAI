@@ -54,10 +54,10 @@ def build_data_and_labels():
     print("[INFO] loading images...")
     image_format = config.IMAGES_PATH + os.path.sep + "{}"
     image_paths = [image_format.format(i) for i in (os.listdir(config.IMAGES_PATH))]
-    image_paths = image_paths[0:1000] # TODO: remove this
+    # image_paths = image_paths[0:100] # TODO: remove this
     image_paths = sorted(image_paths)
-    random.seed(42)
-    random.shuffle(image_paths)
+    random.seed(config.RANDOM_SEED)
+    random.shuffle(image_paths) # randomize for better training
 
     print("[INFO] building data and labels...")
     count = 0
@@ -70,16 +70,15 @@ def build_data_and_labels():
         image = img_to_array(image)
         data.append(image)
 
-        # build label
+        # build labels
         image_name = os.path.basename(image_path)
-        label = annos[image_name]
+        label = annos[image_name] # label contains make and model
         labels.append(label)
 
     data = np.array(data, dtype="float") / 255.0 # normalize to [0,1] for faster training
     labels = np.array(labels)
-    print(labels[0])
 
-    # binarize labels into muli-hot encode vector
+    # binarize labels into 2-hot encode vector
     mlb = MultiLabelBinarizer()
     labels = mlb.fit_transform(labels)
 
