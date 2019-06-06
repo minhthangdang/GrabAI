@@ -6,8 +6,7 @@ import random # required for randomization
 import cv2 # opencv
 from keras.preprocessing.image import img_to_array # convert image to array
 import numpy as np # numpy
-from sklearn.preprocessing import MultiLabelBinarizer # required for labels binarizing
-import tensorflow as tf
+from sklearn.preprocessing import LabelBinarizer # required for labels binarizing
 
 # this will build data, labels and mlb from disk
 def build_data_and_labels():
@@ -24,6 +23,7 @@ def build_data_and_labels():
 
     # read the annotations from csv file
     annos = dict()
+    bounding_box = dict()
     with open(config.ANNOS_PATH) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         for row in csv_reader:
@@ -42,20 +42,29 @@ def build_data_and_labels():
             pos = class_name.rfind(" ")
             class_name = class_name[0:pos]
 
+            # get bounding box from the csv file
+            x1 = int(row[1])
+            y1 = int(row[2])
+            x2 = int(row[3])
+            y2 = int(row[4])
+
             # get make and model from class name, so make  = 'McLaren' and model = 'MP4-12C Coupe'
-            make = ""
+            '''make = ""
             model = ""
             for _make in config.MAKES:
                 if class_name.startswith(_make):
                     make = _make
                     model = class_name.replace(_make+" ", "")
 
-            annos[file_name] = [make, model]
+            annos[file_name] = [make, model]'''
+            annos[file_name] = class_name
+            bounding_box[file_path] = [x1, y1, x2, y2]
+
 
     print("[INFO] loading images...")
     image_format = config.IMAGES_PATH + os.path.sep + "{}"
     image_paths = [image_format.format(i) for i in (os.listdir(config.IMAGES_PATH))]
-    # image_paths = image_paths[0:100] # TODO: remove this
+    #image_paths = image_paths[0:1000] # TODO: remove this
     image_paths = sorted(image_paths)
     random.seed(config.RANDOM_SEED)
     random.shuffle(image_paths) # randomize for better training
@@ -69,10 +78,21 @@ def build_data_and_labels():
         print("building data and labels number " + str(count) + " " + image_path)
         # build data
         image = cv2.imread(image_path)
-        image = cv2.resize(image, (config.IMAGE_DIMS[1], config.IMAGE_DIMS[0]))
-        image = image - vgg_mean # mean subtraction for VGG
-        image = img_to_array(image)
-        data.append(image)
+        # extract the car object based on provided bounding box
+        coords = bounding_box[image_path]
+        x1 = coords[0]
+        y1 = coords[1]
+        x2 = coords[2]
+        y2 = coords[3]
+        car_image = image[y1:y2, x1:x2, :]
+
+        # vgg-specific setup
+        car_image = cv2.resize(car_image, (config.IMAGE_DIMS[1], config.IMAGE_DIMS[0]))
+        car_image = car_image - vgg_mean # mean subtraction for VGG
+
+        # add car image to data
+        car_image = img_to_array(car_image)
+        data.append(car_image)
 
         # build labels
         image_name = os.path.basename(image_path)
@@ -82,8 +102,8 @@ def build_data_and_labels():
     data = np.array(data, dtype="float") / 255.0 # normalize to [0,1] for faster training
     labels = np.array(labels)
 
-    # binarize labels into 2-hot encode vector
-    mlb = MultiLabelBinarizer()
+    # binarize labels into 1-hot encode vector
+    mlb = LabelBinarizer()
     labels = mlb.fit_transform(labels)
 
     return data, labels, mlb

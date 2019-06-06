@@ -17,6 +17,8 @@ class MaMoNet:
     def build(width, height, depth, classes, finalAct="softmax"):
         # initialize VGG16 network without the fully connected layer
         conv_base = VGG16(weights="imagenet", include_top=False, input_shape=config.IMAGE_DIMS)
+        for layer in conv_base.layers:
+            layer.trainable = False
 
         # setting up our model
         model = Sequential()
@@ -32,7 +34,5 @@ class MaMoNet:
         # classifier
         model.add(Dense(classes))
         model.add(Activation(finalAct))
-
-        conv_base.trainable = False
 
         return model
