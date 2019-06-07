@@ -1,3 +1,5 @@
+import numpy as np
+
 
 # define images path
 IMAGES_PATH = "car_ims"
@@ -5,11 +7,7 @@ IMAGES_PATH = "car_ims"
 ANNOS_PATH = "annotations.csv"
 # define class names file
 CLASSNAMES_PATH = "class_names.csv"
-# define model path
-MODEL_PATH = "cars.model"
-# define label path
-LABEL_PATH = "labels.pickle"
-#define plot path
+# define plot path
 PLOT_PATH = "plot.png"
 # define list of makes
 MAKES = ['Acura', 'AM General', 'Aston Martin', 'Audi', 'Bentley', 'BMW', 'Bugatti', 'Buick',
@@ -22,7 +20,7 @@ MAKES = ['Acura', 'AM General', 'Aston Martin', 'Audi', 'Bentley', 'BMW', 'Bugat
 # image dimensions for training
 IMAGE_DIMS = (224, 224, 3)
 # number of EPOCHS
-EPOCHS = 10
+EPOCHS = 5
 # learning rate
 LR = 0.001
 # batch size
@@ -30,3 +28,15 @@ BATCH_SIZE = 32
 # random seed
 RANDOM_SEED = 42
 
+# VGG Mean as used by tensorflow https://github.com/machrisaa/tensorflow-vgg/blob/master/vgg16.py
+VGG_MEAN = np.array([103.939, 116.779, 123.68], dtype=np.float32)
+
+# define files for vgg model and labels
+MYVGG_MODEL="cars.model"
+MYVGG_LABEL="labels.pickle"
+
+YOLO_WEIGHTS = "yolo-coco/yolov3.weights"
+YOLO_CFG = "yolo-coco/yolov3.cfg"
+YOLO_NAMES = "yolo-coco/coco.names"
+YOLO_MIN_CONFIDENCE = 0.7
+YOLO_NMS_THRESHOLD = 0.4

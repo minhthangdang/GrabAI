@@ -1,60 +1,61 @@
 # USAGE
-# python classify.py --model cars.model --labelbin mlb.pickle --image examples/example_01.jpg
+# python classify.py --image examples/example_01.jpg
 
 # import the necessary packages
 from keras.preprocessing.image import img_to_array
 from keras.models import load_model
 import numpy as np
 import argparse
-import imutils
 import pickle
 import cv2
 from config import config
+from car_detect import detect_bounding_box
+import utils
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-m", "--model", required=True,
-	help="path to trained model model")
-ap.add_argument("-l", "--labelbin", required=True,
-	help="path to label binarizer")
-ap.add_argument("-i", "--image", required=True,
-	help="path to input image")
+ap.add_argument("-i", "--image", required=True, help="path to input image")
 args = vars(ap.parse_args())
 
 # load the image
 image = cv2.imread(args["image"])
-output = imutils.resize(image, width=400)
- 
+original = image.copy()
+
+# get the car bounding box
+(x, y, width, height) = detect_bounding_box(image)
+
+# extract the area which contains the car
+image = image[y:y + height, x:x + width]
+
 # pre-process the image for classification
 image = cv2.resize(image, (config.IMAGE_DIMS[1], config.IMAGE_DIMS[0]))
+image = image - config.VGG_MEAN
 image = image.astype("float") / 255.0
 image = img_to_array(image)
 image = np.expand_dims(image, axis=0)
 
-# load the trained convolutional neural network and the multi-label
-# binarizer
-print("[INFO] loading network...")
-model = load_model(args["model"])
-mlb = pickle.loads(open(args["labelbin"], "rb").read())
+# load the trained convolutional neural network and the label binarizer
+print("[INFO] loading vgg network...")
+model = load_model(config.MYVGG_MODEL)
+label_binarizer = pickle.loads(open(config.MYVGG_LABEL, "rb").read())
 
-# classify the input image then find the indexes of the two class
-# labels with the *largest* probability
+# classify the input image then find the index of the class with the *largest* probability
 print("[INFO] classifying image...")
 proba = model.predict(image)[0]
-print(np.argsort(proba))
-idxs = np.argsort(proba)[::-1][:2]
+idx = np.argsort(proba)[-1]
 
-# loop over the indexes of the high confidence class labels
-for (i, j) in enumerate(idxs):
-	# build the label and draw the label on the image
-	label = "{}: {:.2f}%".format(mlb.classes_[j], proba[j] * 100)
-	cv2.putText(output, label, (10, (i * 30) + 25),
-		cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+# build the label and draw the label on the image
+original, ratio = utils.resize(original, width = 800)
+label = "{}: {:.2f}%".format(label_binarizer.classes_[idx], proba[idx] * 100)
+cv2.putText(original, label, (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255), 2)
 
-# show the probabilities for each of the individual labels
-for (label, p) in zip(mlb.classes_, proba):
-	print("{}: {:.2f}%".format(label, p * 100))
+# draw the bounding box
+x = int(x*ratio)
+y = int(y*ratio)
+width = int(width*ratio)
+height = int(height*ratio)
+cv2.rectangle(original, (x, y), (x+width, y+height), (0, 255, 0), 2)
 
-# show the output image
-cv2.imshow("Output", output)
+# show the output image with bounding box
+cv2.imshow("Output", original)
 cv2.waitKey(0)

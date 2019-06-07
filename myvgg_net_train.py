@@ -1,5 +1,5 @@
 # USAGE
-# python train.py --model cars.model --labelbin mlb.pickle
+# python myvgg_net_train.py
 
 # set the matplotlib backend so figures can be saved in the background
 import matplotlib
@@ -15,13 +15,13 @@ import preprocess
 from keras.preprocessing.image import ImageDataGenerator
 from keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
-from mamonet.mamonet import MaMoNet
+from myvggnet.myvggnet import MyVGGNet
 import matplotlib.pyplot as plt
 import numpy as np
 import pickle
 
 # build data and labels
-data, labels, mlb = preprocess.build_data_and_labels()
+data, labels, label_binarizer = preprocess.build_data_and_labels()
 
 # split the data into training and testing (80% and 20% respectively)
 (trainX, testX, trainY, testY) = train_test_split(data, labels, test_size=0.2, random_state=config.RANDOM_SEED)
@@ -34,12 +34,9 @@ aug = ImageDataGenerator(rotation_range=25, width_shift_range=0.1,
 # initialize the model using a sigmoid activation as the final layer
 # in the network so we can perform multi-label classification
 print("[INFO] compiling model...")
-model = MaMoNet.build(
-	width=config.IMAGE_DIMS[1], height=config.IMAGE_DIMS[0],
-	depth=config.IMAGE_DIMS[2], classes=len(mlb.classes_),
-	finalAct="sigmoid")
+model = MyVGGNet.build(classes=len(label_binarizer.classes_), finalAct="softmax")
 
-# initialize the optimizer (SGD is sufficient)
+# initialize the optimizer
 opt = Adam(lr=config.LR, decay=config.LR / config.EPOCHS)
 
 # compile the model using binary cross-entropy
@@ -55,12 +52,12 @@ H = model.fit_generator(
 
 # save the model to disk
 print("[INFO] serializing network...")
-model.save(config.MODEL_PATH)
+model.save(config.MYVGG_MODEL)
 
-# save the multi-label binarizer to disk
+# save the label binarizer to disk
 print("[INFO] serializing label binarizer...")
-f = open(config.LABEL_PATH, "wb")
-f.write(pickle.dumps(mlb))
+f = open(config.MYVGG_LABEL, "wb")
+f.write(pickle.dumps(label_binarizer))
 f.close()
 
 # plot the training loss and accuracy
@@ -74,5 +71,5 @@ plt.plot(np.arange(0, N), H.history["val_acc"], label="val_acc")
 plt.title("Training Loss and Accuracy")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss/Accuracy")
-plt.legend(loc="bottom right")
+plt.legend(loc="lower right")
 plt.savefig(config.PLOT_PATH)

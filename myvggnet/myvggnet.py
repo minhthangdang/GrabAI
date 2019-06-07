@@ -1,8 +1,6 @@
 # import the necessary packages
 from keras.models import Sequential
 from keras.layers.normalization import BatchNormalization
-from keras.layers.convolutional import Conv2D
-from keras.layers.convolutional import MaxPooling2D
 from keras.layers.core import Activation
 from keras.layers.core import Flatten
 from keras.layers.core import Dropout
@@ -12,9 +10,9 @@ from keras.applications import VGG16
 from config import config
 
 
-class MaMoNet:
+class MyVGGNet:
     @staticmethod
-    def build(width, height, depth, classes, finalAct="softmax"):
+    def build(classes, finalAct="softmax"):
         # initialize VGG16 network without the fully connected layer
         conv_base = VGG16(weights="imagenet", include_top=False, input_shape=config.IMAGE_DIMS)
         for layer in conv_base.layers:

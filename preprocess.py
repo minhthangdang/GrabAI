@@ -64,14 +64,12 @@ def build_data_and_labels():
     print("[INFO] loading images...")
     image_format = config.IMAGES_PATH + os.path.sep + "{}"
     image_paths = [image_format.format(i) for i in (os.listdir(config.IMAGES_PATH))]
-    #image_paths = image_paths[0:1000] # TODO: remove this
+    # image_paths = image_paths[0:100] # TODO: remove this
     image_paths = sorted(image_paths)
     random.seed(config.RANDOM_SEED)
     random.shuffle(image_paths) # randomize for better training
 
     print("[INFO] building data and labels...")
-    # VGG Mean as used by tensorflow https://github.com/machrisaa/tensorflow-vgg/blob/master/vgg16.py
-    vgg_mean = np.array([103.939, 116.779, 123.68], dtype=np.float32)
     count = 0
     for image_path in image_paths:
         count += 1
@@ -88,7 +86,7 @@ def build_data_and_labels():
 
         # vgg-specific setup
         car_image = cv2.resize(car_image, (config.IMAGE_DIMS[1], config.IMAGE_DIMS[0]))
-        car_image = car_image - vgg_mean # mean subtraction for VGG
+        car_image = car_image - config.VGG_MEAN # mean subtraction for VGG
 
         # add car image to data
         car_image = img_to_array(car_image)
@@ -103,7 +101,7 @@ def build_data_and_labels():
     labels = np.array(labels)
 
     # binarize labels into 1-hot encode vector
-    mlb = LabelBinarizer()
-    labels = mlb.fit_transform(labels)
+    label_binarizer = LabelBinarizer()
+    labels = label_binarizer.fit_transform(labels)
 
-    return data, labels, mlb
+    return data, labels, label_binarizer
