@@ -48,15 +48,6 @@ def build_data_and_labels():
             x2 = int(row[3])
             y2 = int(row[4])
 
-            # get make and model from class name, so make  = 'McLaren' and model = 'MP4-12C Coupe'
-            '''make = ""
-            model = ""
-            for _make in config.MAKES:
-                if class_name.startswith(_make):
-                    make = _make
-                    model = class_name.replace(_make+" ", "")
-
-            annos[file_name] = [make, model]'''
             annos[file_name] = class_name
             bounding_box[file_path] = [x1, y1, x2, y2]
 
@@ -64,7 +55,7 @@ def build_data_and_labels():
     print("[INFO] loading images...")
     image_format = config.IMAGES_PATH + os.path.sep + "{}"
     image_paths = [image_format.format(i) for i in (os.listdir(config.IMAGES_PATH))]
-    # image_paths = image_paths[0:100] # TODO: remove this
+    # image_paths = image_paths[0:50]
     image_paths = sorted(image_paths)
     random.seed(config.RANDOM_SEED)
     random.shuffle(image_paths) # randomize for better training
