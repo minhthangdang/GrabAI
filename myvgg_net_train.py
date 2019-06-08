@@ -25,6 +25,7 @@ import pickle
 data, labels, label_binarizer = preprocess.build_data_and_labels()
 
 # split the data into training and testing (80% and 20% respectively)
+print("[INFO] splitting data for train/test...")
 (trainX, testX, trainY, testY) = train_test_split(data, labels, test_size=0.2, random_state=config.RANDOM_SEED)
 
 # construct the image generator for data augmentation
@@ -61,6 +62,7 @@ f.write(pickle.dumps(label_binarizer))
 f.close()
 
 # print out classification report on test data
+print("[INFO] preparing classification report...")
 predictions = model.predict(testX, batch_size=config.BATCH_SIZE)
 print(classification_report(testY.argmax(axis=1), predictions.argmax(axis=1), target_names=label_binarizer.classes_))
 
