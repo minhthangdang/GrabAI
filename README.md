@@ -1,15 +1,14 @@
-Grab AI's Computer Vision Challenge 2019
-=======
+# Grab AI's Computer Vision Challenge 2019
 
-# Introduction
+## Introduction
 
 This project is created as a submission for the [Grab AI's Computer Vision Challenge 2019](https://www.aiforsea.com/computer-vision)
 
-# Problem Statement
+## Problem Statement
 
 Given a [dataset](https://ai.stanford.edu/~jkrause/cars/car_dataset.html) of distinct car images , can you automatically recognize the car model and make?
 
-# Installation
+## Installation
 
 The code was written and tested on Ubuntu 16.04, and the following tools/packages were required:
 * Python 3.5.2
