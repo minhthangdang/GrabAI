@@ -4,9 +4,9 @@ import numpy as np
 # define images path
 IMAGES_PATH = "car_ims"
 # define annotations file
-ANNOS_PATH = "annotations.csv"
+ANNOS_PATH = "annotations/annotations.csv"
 # define class names file
-CLASSNAMES_PATH = "class_names.csv"
+CLASSNAMES_PATH = "annotations/class_names.csv"
 # image dimensions for training
 IMAGE_DIMS = (224, 224, 3)
 # number of EPOCHS
