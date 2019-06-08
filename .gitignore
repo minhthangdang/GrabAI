@@ -1,3 +1,4 @@
 *.tgz
-dataset/*
+validate/*
 car_ims/*
+__pycache__/*
