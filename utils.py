@@ -3,8 +3,7 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 from config import config
-from sklearn.metrics import confusion_matrix
-from sklearn.utils.multiclass import unique_labels
+import csv
 
 # set the matplotlib backend so figures can be saved in the background
 matplotlib.use("Agg")
@@ -35,3 +34,14 @@ def plot_loss_accuracy(H):
     plt.savefig(config.MYVGG_PLOT_PATH)
 
 
+def write_report_csv(report):
+    csv_file = "Names.csv"
+    csv_columns = ['label', 'precision', 'recall', 'f1-score', 'support']
+    try:
+        with open(csv_file, 'w') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
+            writer.writeheader()
+            for data in report:
+                writer.writerow(data)
+    except IOError:
+        print("I/O error")
