@@ -10,6 +10,7 @@ import preprocess
 # import the necessary packages
 from keras.preprocessing.image import ImageDataGenerator
 from keras.optimizers import Adam
+from keras.optimizers import SGD
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from myvggnet.myvggnet import MyVGGNet
@@ -33,7 +34,8 @@ print("[INFO] compiling model...")
 model = MyVGGNet.build(classes=len(label_binarizer.classes_), finalAct="softmax")
 
 # initialize the optimizer
-opt = Adam(lr=config.LR, decay=config.LR / config.EPOCHS)
+# opt = Adam(lr=config.LR, decay=config.LR / config.EPOCHS)
+opt = SGD(lr=0.0001, momentum=0.9, nesterov=True)
 
 # compile the model using binary cross-entropy
 model.compile(loss="binary_crossentropy", optimizer=opt, metrics=["accuracy"])
