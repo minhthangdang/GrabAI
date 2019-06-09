@@ -61,5 +61,8 @@ print("[INFO] preparing classification report...")
 predictions = model.predict(testX, batch_size=config.BATCH_SIZE)
 print(classification_report(testY.argmax(axis=1), predictions.argmax(axis=1), target_names=label_binarizer.classes_))
 
+# plot confusion matrix
+utils.plot_confusion_matrix(testY, predictions, classes=label_binarizer.classes_, title='Confusion matrix, without normalization')
+
 # plot loss and accuracy and save to file
 utils.plot_loss_accuracy(H)
