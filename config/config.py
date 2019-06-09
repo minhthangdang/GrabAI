@@ -10,7 +10,7 @@ CLASSNAMES_PATH = "annotations/class_names.csv"
 # image dimensions for training
 IMAGE_DIMS = (224, 224, 3)
 # number of EPOCHS
-EPOCHS = 5
+EPOCHS = 10
 # learning rate
 LR = 0.001
 # batch size
