@@ -13,7 +13,7 @@ import preprocess
 
 # import the necessary packages
 from keras.preprocessing.image import ImageDataGenerator
-from keras.optimizers import SGD
+from keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from myvggnet.myvggnet import MyVGGNet
@@ -26,7 +26,7 @@ data, labels, label_binarizer = preprocess.build_data_and_labels()
 
 # split the data into training and testing (80% and 20% respectively)
 print("[INFO] splitting data for train/test...")
-(trainX, testX, trainY, testY) = train_test_split(data, labels, test_size=0.2, random_state=config.RANDOM_SEED)
+(trainX, testX, trainY, testY) = train_test_split(data, labels, test_size=0.3, random_state=config.RANDOM_SEED)
 
 # construct the image generator for data augmentation
 aug = ImageDataGenerator(rotation_range=25, width_shift_range=0.1,
@@ -38,7 +38,7 @@ print("[INFO] compiling model...")
 model = MyVGGNet.build(classes=len(label_binarizer.classes_), finalAct="softmax")
 
 # initialize the optimizer
-opt = SGD(lr=config.LR, momentum=0.9)
+opt = Adam(lr=config.LR, decay=config.LR / config.EPOCHS)
 
 # compile the model using binary cross-entropy
 model.compile(loss="binary_crossentropy", optimizer=opt, metrics=["accuracy"])

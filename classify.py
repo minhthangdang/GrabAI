@@ -11,7 +11,6 @@ import cv2
 from config import config
 from car_detect import detect_bounding_box
 import utils
-from keras.applications.vgg16 import preprocess_input
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -30,10 +29,10 @@ image = image[y:y + height, x:x + width]
 
 # pre-process the image for classification
 image = cv2.resize(image, (config.IMAGE_DIMS[1], config.IMAGE_DIMS[0]))
+image = image - config.VGG_MEAN
+image = image.astype("float") / 255.0
 image = img_to_array(image)
 image = np.expand_dims(image, axis=0)
-image = preprocess_input(image)
-image = image.astype("float") / 255.0
 
 # load the trained convolutional neural network and the label binarizer
 print("[INFO] loading vgg network...")
