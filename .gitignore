@@ -4,3 +4,4 @@ car_ims/*
 __pycache__/*
 myvgg.model
 myvgg_labels.pickle
+plot.png

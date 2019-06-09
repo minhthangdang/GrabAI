@@ -2,11 +2,11 @@
 from config import config
 import csv # required for csv reader
 import os # required for paths
-import random # required for randomization
 import cv2 # opencv
 from keras.preprocessing.image import img_to_array # convert image to array
 import numpy as np # numpy
 from sklearn.preprocessing import LabelBinarizer # required for labels binarizing
+from keras.applications.vgg16 import preprocess_input
 
 # this will build data, labels and mlb from disk
 def build_data_and_labels():
@@ -58,10 +58,8 @@ def build_data_and_labels():
     image_paths = sorted(image_paths)
 
     print("[INFO] building data and labels...")
-    count = 0
     for image_path in image_paths:
-        count += 1
-        print("building data and labels number " + str(count) + " for " + image_path)
+        print("building data and labels number for " + image_path)
         # build data
         image = cv2.imread(image_path)
         # extract the car object based on provided bounding box
@@ -74,10 +72,10 @@ def build_data_and_labels():
 
         # vgg-specific setup
         car_image = cv2.resize(car_image, (config.IMAGE_DIMS[1], config.IMAGE_DIMS[0]))
-        car_image = car_image - config.VGG_MEAN # mean subtraction for VGG
+        car_image = img_to_array(car_image)
+        car_image = preprocess_input(car_image)
 
         # add car image to data
-        car_image = img_to_array(car_image)
         data.append(car_image)
 
         # build labels
