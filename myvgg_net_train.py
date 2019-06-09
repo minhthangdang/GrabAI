@@ -1,10 +1,6 @@
 # USAGE
 # python myvgg_net_train.py
 
-# set the matplotlib backend so figures can be saved in the background
-import matplotlib
-matplotlib.use("Agg")
-
 # import config
 from config import config
 
@@ -17,9 +13,8 @@ from keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from myvggnet.myvggnet import MyVGGNet
-import matplotlib.pyplot as plt
-import numpy as np
 import pickle
+import utils
 
 # build data and labels
 data, labels, label_binarizer = preprocess.build_data_and_labels()
@@ -66,16 +61,5 @@ print("[INFO] preparing classification report...")
 predictions = model.predict(testX, batch_size=config.BATCH_SIZE)
 print(classification_report(testY.argmax(axis=1), predictions.argmax(axis=1), target_names=label_binarizer.classes_))
 
-# plot the training loss and accuracy
-plt.style.use("ggplot")
-plt.figure()
-N = config.EPOCHS
-plt.plot(np.arange(0, N), H.history["loss"], label="train_loss")
-plt.plot(np.arange(0, N), H.history["val_loss"], label="val_loss")
-plt.plot(np.arange(0, N), H.history["acc"], label="train_acc")
-plt.plot(np.arange(0, N), H.history["val_acc"], label="val_acc")
-plt.title("Training Loss and Accuracy")
-plt.xlabel("Epoch #")
-plt.ylabel("Loss/Accuracy")
-plt.legend(loc="lower right")
-plt.savefig(config.MYVGG_PLOT_PATH)
+# plot loss and accuracy and save to file
+utils.plot_loss_accuracy(H)
