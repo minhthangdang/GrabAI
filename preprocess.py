@@ -55,16 +55,13 @@ def build_data_and_labels():
     print("[INFO] loading images...")
     image_format = config.IMAGES_PATH + os.path.sep + "{}"
     image_paths = [image_format.format(i) for i in (os.listdir(config.IMAGES_PATH))]
-    # image_paths = image_paths[0:50]
     image_paths = sorted(image_paths)
-    random.seed(config.RANDOM_SEED)
-    random.shuffle(image_paths) # randomize for better training
 
     print("[INFO] building data and labels...")
     count = 0
     for image_path in image_paths:
         count += 1
-        print("building data and labels number " + str(count) + " " + image_path)
+        print("building data and labels number " + str(count) + " for " + image_path)
         # build data
         image = cv2.imread(image_path)
         # extract the car object based on provided bounding box
