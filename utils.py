@@ -33,15 +33,3 @@ def plot_loss_accuracy(H):
     plt.legend(loc="lower right")
     plt.savefig(config.MYVGG_PLOT_PATH)
 
-
-def write_report_csv(report):
-    csv_file = "Names.csv"
-    csv_columns = ['label', 'precision', 'recall', 'f1-score', 'support']
-    try:
-        with open(csv_file, 'w') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
-            writer.writeheader()
-            for data in report:
-                writer.writerow(data)
-    except IOError:
-        print("I/O error")
