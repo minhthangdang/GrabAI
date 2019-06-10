@@ -156,9 +156,8 @@ def build_data_and_labels_myresnet50():
         car_image = image[y1:y2, x1:x2, :]
 
         # resnet50-specific setup
-        car_image = img_to_array(car_image)
-        car_image = np.expand_dims(car_image, axis=0)
         car_image = preprocess_input(car_image)
+        car_image = img_to_array(car_image)
 
         # add car image to data
         data.append(car_image)
