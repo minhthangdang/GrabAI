@@ -59,7 +59,7 @@ def build_data_and_labels():
 
     print("[INFO] building data and labels...")
     for image_path in image_paths:
-        print("building data and labels number for " + image_path)
+        print("[INFO] building data and labels for " + image_path)
         # build data
         image = cv2.imread(image_path)
         # extract the car object based on provided bounding box
