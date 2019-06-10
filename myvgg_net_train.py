@@ -10,8 +10,7 @@ import preprocess
 # import the necessary packages
 from keras.preprocessing.image import ImageDataGenerator
 from keras.optimizers import Adam
-# from keras.optimizers import SGD
-# from keras.optimizers import RMSprop
+from keras.optimizers import RMSprop
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from myvggnet.myvggnet import MyVGGNet
@@ -35,40 +34,45 @@ print("[INFO] compiling model...")
 model = MyVGGNet.build(classes=len(label_binarizer.classes_), finalAct="softmax")
 
 # initialize the optimizer
-opt = Adam(lr=config.LR, decay=config.LR / config.EPOCHS)
+# opt = Adam(lr=config.LR, decay=config.LR / config.EPOCHS)
 # opt = SGD(lr=0.0001, momentum=0.9, nesterov=True)
 # opt = RMSprop(lr=0.0001)
+opts = []
+opts.append(Adam(lr=config.LR, decay=config.LR / config.EPOCHS))
+opts.append(RMSprop(lr=0.0001))
 
-# compile the model using binary cross-entropy
-model.compile(loss="binary_crossentropy", optimizer=opt, metrics=["accuracy"])
+for idx, opt in enumerate(opts):
 
-# train the network
-print("[INFO] training network...")
-H = model.fit_generator(
-	aug.flow(trainX, trainY, batch_size=config.BATCH_SIZE),
-	validation_data=(testX, testY),
-	steps_per_epoch=len(trainX) // config.BATCH_SIZE,
-	epochs=config.EPOCHS, verbose=1)
+	# compile the model using binary cross-entropy
+	model.compile(loss="binary_crossentropy", optimizer=opt, metrics=["accuracy"])
 
-# save the model to disk
-print("[INFO] serializing network...")
-model.save(config.MYVGG_MODEL)
+	# train the network
+	print("[INFO] training network " + str(idx) + "...")
+	H = model.fit_generator(
+		aug.flow(trainX, trainY, batch_size=config.BATCH_SIZE),
+		validation_data=(testX, testY),
+		steps_per_epoch=len(trainX) // config.BATCH_SIZE,
+		epochs=config.EPOCHS, verbose=1)
 
-# save the label binarizer to disk
-print("[INFO] serializing label binarizer...")
-f = open(config.MYVGG_LABEL, "wb")
-f.write(pickle.dumps(label_binarizer))
-f.close()
+	# save the model to disk
+	print("[INFO] serializing network...")
+	model.save(config.MYVGG_MODEL + str(idx))
 
-# print out classification report on test data
-print("[INFO] preparing classification report...")
-predictions = model.predict(testX, batch_size=config.BATCH_SIZE)
-report = classification_report(testY.argmax(axis=1), predictions.argmax(axis=1), target_names=label_binarizer.classes_)
-print(report)
-print("[INFO] saving classification report...")
-f=open(config.MYVGG_REPORT_PATH, "w")
-f.write(report)
+	# save the label binarizer to disk
+	print("[INFO] serializing label binarizer...")
+	f = open(config.MYVGG_LABEL + str(idx), "wb")
+	f.write(pickle.dumps(label_binarizer))
+	f.close()
 
-# plot loss and accuracy and save to file
-print("[INFO] saving loss and accuracy plot...")
-utils.plot_loss_accuracy(H)
+	# print out classification report on test data
+	print("[INFO] preparing classification report...")
+	predictions = model.predict(testX, batch_size=config.BATCH_SIZE)
+	report = classification_report(testY.argmax(axis=1), predictions.argmax(axis=1), target_names=label_binarizer.classes_)
+	print(report)
+	print("[INFO] saving classification report...")
+	f = open(config.MYVGG_REPORT_PATH + str(idx), "w")
+	f.write(report)
+
+	# plot loss and accuracy and save to file
+	# print("[INFO] saving loss and accuracy plot...")
+	# utils.plot_loss_accuracy(H)
