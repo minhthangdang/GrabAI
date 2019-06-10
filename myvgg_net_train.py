@@ -18,9 +18,18 @@ from myvggnet.myvggnet import MyVGGNet
 import pickle
 import utils
 import gc
+from keras import backend as K
+import os
+
 
 # build data and labels
 data, labels, label_binarizer = preprocess.build_data_and_labels()
+
+# save the label binarizer to disk
+print("[INFO] serializing label binarizer...")
+f = open(config.MYVGG_LABEL, "wb")
+f.write(pickle.dumps(label_binarizer))
+f.close()
 
 # split the data into training and testing (80% and 20% respectively)
 print("[INFO] splitting data for train/test...")
@@ -41,7 +50,7 @@ opts.append(RMSprop(lr=0.0001))
 opts.append(Adagrad(lr=0.01))
 
 for idx, opt in enumerate(opts):
-	idx = idx + 1 # so that it will show from 1
+	idx = str(idx + 1) # so that it will start from 1
 
 	# initialize the model
 	print("[INFO] compiling model...")
@@ -60,13 +69,7 @@ for idx, opt in enumerate(opts):
 
 	# save the model to disk
 	print("[INFO] serializing network...")
-	model.save(config.MYVGG_MODEL + str(idx))
-
-	# save the label binarizer to disk
-	print("[INFO] serializing label binarizer...")
-	f = open(config.MYVGG_LABEL + str(idx), "wb")
-	f.write(pickle.dumps(label_binarizer))
-	f.close()
+	model.save(config.MYVGG_MODEL_PATH + os.path.sep + "model_"+idx+".model")
 
 	# print out classification report on test data
 	print("[INFO] preparing classification report...")
@@ -74,9 +77,11 @@ for idx, opt in enumerate(opts):
 	report = classification_report(testY.argmax(axis=1), predictions.argmax(axis=1), target_names=label_binarizer.classes_)
 	print(report)
 	print("[INFO] saving classification report...")
-	f = open(config.MYVGG_REPORT_PATH + str(idx), "w")
+	f = open(config.MYVGG_REPORT_PATH + os.path.sep + "report_"+idx+".txt", "w")
 	f.write(report)
 
+	# free up memory
+	K.clear_session()
 	del model
 	del report
 	del H

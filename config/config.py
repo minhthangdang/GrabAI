@@ -20,7 +20,8 @@ RANDOM_SEED = 42
 
 # define MYVGG model plot and report path
 MYVGG_PLOT_PATH = "plot.png"
-MYVGG_REPORT_PATH = "report.txt"
+MYVGG_REPORT_PATH = "reports"
+MYVGG_MODEL_PATH = "models"
 
 # VGG Mean as used by tensorflow https://github.com/machrisaa/tensorflow-vgg/blob/master/vgg16.py
 VGG_MEAN = np.array([103.939, 116.779, 123.68], dtype=np.float32)

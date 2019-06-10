@@ -5,3 +5,6 @@ __pycache__/*
 myvgg.model
 myvgg_labels.pickle
 plot.png
+models/*
+labels/*
+reports/*
