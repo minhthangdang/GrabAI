@@ -6,8 +6,9 @@ import cv2 # opencv
 from keras.preprocessing.image import img_to_array # convert image to array
 import numpy as np # numpy
 from sklearn.preprocessing import LabelBinarizer # required for labels binarizing
+from keras.applications.resnet50 import preprocess_input
 
-# this will build data, labels and mlb from disk
+# this will build data and labels from disk
 def build_data_and_labels():
     # initialize the data and labels
     data = []
@@ -83,6 +84,91 @@ def build_data_and_labels():
         labels.append(label)
 
     data = np.array(data, dtype="float") / 255.0 # normalize to [0,1] for faster training
+    labels = np.array(labels)
+
+    # binarize labels into 1-hot encode vector
+    label_binarizer = LabelBinarizer()
+    labels = label_binarizer.fit_transform(labels)
+
+    return data, labels, label_binarizer
+
+
+# this will build data and labels from disk
+def build_data_and_labels_myresnet50():
+    # initialize the data and labels
+    data = []
+    labels = []
+
+    print("[INFO] loading annotations...")
+
+    # read the class names from csv file and saved it to an array
+    with open(config.CLASSNAMES_PATH) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        class_names = next(csv_reader)
+
+    # read the annotations from csv file
+    annos = dict()
+    bounding_box = dict()
+    with open(config.ANNOS_PATH) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        for row in csv_reader:
+            # get the relative path to the image file
+            file_path = row[0]
+
+            # get file name from file path car_ims/xxx.jpg
+            pos = file_path.rfind("/")
+            file_name = file_path[pos + 1:]
+
+            # get class name, it will be something like 'McLaren MP4-12C Coupe 2012'
+            class_index = int(row[5]) - 1
+            class_name = class_names[class_index]
+
+            # remove year from class name, so it will be like 'McLaren MP4-12C Coupe'
+            pos = class_name.rfind(" ")
+            class_name = class_name[0:pos]
+
+            # get bounding box from the csv file
+            x1 = int(row[1])
+            y1 = int(row[2])
+            x2 = int(row[3])
+            y2 = int(row[4])
+
+            annos[file_name] = class_name
+            bounding_box[file_path] = [x1, y1, x2, y2]
+
+
+    print("[INFO] loading images...")
+    image_format = config.IMAGES_PATH + os.path.sep + "{}"
+    image_paths = [image_format.format(i) for i in (os.listdir(config.IMAGES_PATH))]
+    image_paths = sorted(image_paths)
+
+    print("[INFO] building data and labels...")
+    for image_path in image_paths:
+        print("building data and labels number for " + image_path)
+        # build data
+        image = cv2.imread(image_path)
+        # extract the car object based on provided bounding box
+        coords = bounding_box[image_path]
+        x1 = coords[0]
+        y1 = coords[1]
+        x2 = coords[2]
+        y2 = coords[3]
+        car_image = image[y1:y2, x1:x2, :]
+
+        # resnet50-specific setup
+        car_image = img_to_array(car_image)
+        car_image = np.expand_dims(car_image, axis=0)
+        car_image = preprocess_input(car_image)
+
+        # add car image to data
+        data.append(car_image)
+
+        # build labels
+        image_name = os.path.basename(image_path)
+        label = annos[image_name] # label contains make and model
+        labels.append(label)
+
+    # data = np.array(data, dtype="float") / 255.0 # normalize to [0,1] for faster training
     labels = np.array(labels)
 
     # binarize labels into 1-hot encode vector

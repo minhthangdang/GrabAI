@@ -14,12 +14,12 @@ from keras.optimizers import Adam
 # from keras.optimizers import RMSprop
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
-from myvggnet.myvggnet import MyVGGNet
+from myresnet50.myresnet50 import MyResNet50
 import pickle
 import utils
 
 # build data and labels
-data, labels, label_binarizer = preprocess.build_data_and_labels()
+data, labels, label_binarizer = preprocess.build_data_and_labels_myresnet50()
 
 # split the data into training and testing (80% and 20% respectively)
 print("[INFO] splitting data for train/test...")
@@ -32,7 +32,7 @@ aug = ImageDataGenerator(rotation_range=25, width_shift_range=0.1,
 
 # initialize the model
 print("[INFO] compiling model...")
-model = MyVGGNet.build(classes=len(label_binarizer.classes_), finalAct="softmax")
+model = MyResNet50.build(classes=len(label_binarizer.classes_), finalAct="softmax")
 
 # initialize the optimizer
 opt = Adam(lr=config.LR, decay=config.LR / config.EPOCHS)
