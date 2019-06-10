@@ -49,34 +49,6 @@ opts.append(Adam(lr=config.LR, decay=config.LR / config.EPOCHS))
 opts.append(RMSprop(lr=0.0001))
 opts.append(Adagrad(lr=0.01))
 
-# now we have built 3 models, ensemble them here for good
-models = []
-for idx in range(len(opts)):
-	idx = str(idx + 1)  # so that it will start from 1
-
-	print("[INFO] loading model " + idx + "...")
-	modelName = "model_"+idx
-	modelTemp = load_model(config.MYVGG_MODEL_PATH + os.path.sep + modelName + ".model")
-	modelTemp.name = modelName
-	models.append(modelTemp)
-
-model_input = Input(shape=models[0].input_shape[1:])
-model_ens = MyVGGNet.ensemble_models(models, model_input)
-
-# save the model to disk
-print("[INFO] serializing network...")
-model_ens.save(config.MYVGG_MODEL_PATH + os.path.sep + config.MYVGG_MODEL)
-
-# print out classification report on test data
-print("[INFO] preparing classification report...")
-predictions = model_ens.predict(testX, batch_size=config.BATCH_SIZE)
-report = classification_report(testY.argmax(axis=1), predictions.argmax(axis=1), target_names=label_binarizer.classes_)
-print(report)
-print("[INFO] saving classification report...")
-f = open(config.MYVGG_REPORT_PATH + os.path.sep + "ens_report.txt", "w")
-f.write(report)
-quit(1)
-
 for idx, opt in enumerate(opts):
 	idx = str(idx + 1) # so that it will start from 1
 
@@ -96,7 +68,7 @@ for idx, opt in enumerate(opts):
 		epochs=config.EPOCHS, verbose=1)
 
 	# save the model to disk
-	print("[INFO] serializing network...")
+	print("[INFO] serializing network " + str(idx) + "...")
 	model.save(config.MYVGG_MODEL_PATH + os.path.sep + "model_"+idx+".model")
 
 	# print out classification report on test data
@@ -133,7 +105,7 @@ model_input = Input(shape=models[0].input_shape[1:])
 model_ens = MyVGGNet.ensemble_models(models, model_input)
 
 # save the model to disk
-print("[INFO] serializing network...")
+print("[INFO] serializing ensemble network...")
 model_ens.save(config.MYVGG_MODEL_PATH + os.path.sep + config.MYVGG_MODEL)
 
 # print out classification report on test data
