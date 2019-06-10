@@ -168,7 +168,7 @@ def build_data_and_labels_myresnet50():
         label = annos[image_name] # label contains make and model
         labels.append(label)
 
-    # data = np.array(data, dtype="float") / 255.0 # normalize to [0,1] for faster training
+    data = np.array(data, dtype="float") / 255.0 # normalize to [0,1] for faster training
     labels = np.array(labels)
 
     # binarize labels into 1-hot encode vector
