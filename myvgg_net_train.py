@@ -11,11 +11,13 @@ import preprocess
 from keras.preprocessing.image import ImageDataGenerator
 from keras.optimizers import Adam
 from keras.optimizers import RMSprop
+from keras.optimizers import Adagrad
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from myvggnet.myvggnet import MyVGGNet
 import pickle
 import utils
+import gc
 
 # build data and labels
 data, labels, label_binarizer = preprocess.build_data_and_labels()
@@ -29,10 +31,6 @@ aug = ImageDataGenerator(rotation_range=25, width_shift_range=0.1,
 	height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
 	horizontal_flip=True, fill_mode="nearest")
 
-# initialize the model
-print("[INFO] compiling model...")
-model = MyVGGNet.build(classes=len(label_binarizer.classes_), finalAct="softmax")
-
 # initialize the optimizer
 # opt = Adam(lr=config.LR, decay=config.LR / config.EPOCHS)
 # opt = SGD(lr=0.0001, momentum=0.9, nesterov=True)
@@ -40,8 +38,14 @@ model = MyVGGNet.build(classes=len(label_binarizer.classes_), finalAct="softmax"
 opts = []
 opts.append(Adam(lr=config.LR, decay=config.LR / config.EPOCHS))
 opts.append(RMSprop(lr=0.0001))
+opts.append(Adagrad(lr=0.01))
 
 for idx, opt in enumerate(opts):
+	idx = idx + 1 # so that it will show from 1
+
+	# initialize the model
+	print("[INFO] compiling model...")
+	model = MyVGGNet.build(classes=len(label_binarizer.classes_), finalAct="softmax")
 
 	# compile the model using binary cross-entropy
 	model.compile(loss="binary_crossentropy", optimizer=opt, metrics=["accuracy"])
@@ -72,6 +76,11 @@ for idx, opt in enumerate(opts):
 	print("[INFO] saving classification report...")
 	f = open(config.MYVGG_REPORT_PATH + str(idx), "w")
 	f.write(report)
+
+	del model
+	del report
+	del H
+	gc.collect()
 
 	# plot loss and accuracy and save to file
 	# print("[INFO] saving loss and accuracy plot...")
