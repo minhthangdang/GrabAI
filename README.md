@@ -62,7 +62,17 @@ image with a bounding box for the car and the prediction. Here are a few example
 | ![Hyundai Santa Fe SUV](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Hyundai_SantaFe_SUV.JPG) | ![Jeep Patriot SUV](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Jeep-Patriot-SUV.JPG) | 
 
 
+### Training
 
+I've provided a trained model in the link above, which is ready for use. However if by any chance you would like to re-run
+the model training, please run the following script:
+
+```
+python myvgg_net_train.py
+```
+
+Please note that you will probably need a GPU to train my model. For your reference, I run my model training on Amazon 
+Web Service with a Tesla K80 GPU (the p2.xlarge EC2 instance).
 
 
 
