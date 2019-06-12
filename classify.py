@@ -1,5 +1,5 @@
 # USAGE
-# python classify.py --image examples/example_01.jpg
+# python classify.py --image samples/Ford_FiestaSedan.jpg
 
 # import the necessary packages
 from keras.preprocessing.image import img_to_array
