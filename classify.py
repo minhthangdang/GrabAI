@@ -11,6 +11,7 @@ import cv2
 from config import config
 from car_detect import detect_bounding_box
 import utils
+import os
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -36,7 +37,7 @@ image = np.expand_dims(image, axis=0)
 
 # load the trained convolutional neural network and the label binarizer
 print("[INFO] loading vgg network...")
-model = load_model(config.MYVGG_MODEL)
+model = load_model(config.MYVGG_MODEL_PATH + os.path.sep + config.MYVGG_MODEL)
 label_binarizer = pickle.loads(open(config.MYVGG_LABEL, "rb").read())
 
 # classify the input image then find the index of the class with the *largest* probability
@@ -47,6 +48,7 @@ idx = np.argsort(proba)[-1]
 # build the label and draw the label on the image
 original, ratio = utils.resize(original, width = 800)
 label = "{}: {:.2f}%".format(label_binarizer.classes_[idx], proba[idx] * 100)
+print(label)
 cv2.putText(original, label, (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255), 2)
 
 # draw the bounding box
