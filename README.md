@@ -53,9 +53,9 @@ If everything is configured correctly you can see the process running:
 It will output the make, model and confidence score for the car in the image, for example "Ford Fiesta Sedan: 47.69%". It will also show the
 image with a bounding box for the car and the prediction. Here are a few examples:
 
-| Ford Fiesta | Ford GT Coupe |
+| Ford Fiesta | Toyota Camry Sedan |
 | --- | --- |
-| ![Ford Fiesta Sedan](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Ford-Fiesta-Sedan.JPG) | ![Ford GT Coupe](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Ford-GT-Coup.JPG) |
+| ![Ford Fiesta Sedan](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Ford-Fiesta-Sedan.JPG) | ![Toyota Camry Sedan](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Toyota-Camry-Sedan.JPG) |
 
 | Hyundai Santa Fe SUV | Jeep Patriot SUV |
 | --- | --- |
