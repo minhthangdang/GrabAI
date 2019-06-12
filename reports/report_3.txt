@@ -1,0 +1,195 @@
+                                                   precision    recall  f1-score   support
+
+                            AM General Hummer SUV       0.91      0.95      0.93        22
+                             Acura Integra Type R       0.79      0.65      0.71        23
+                                   Acura RL Sedan       0.67      0.46      0.55        13
+                                   Acura TL Sedan       0.52      0.88      0.65        17
+                                  Acura TL Type-S       0.64      0.76      0.70        21
+                                  Acura TSX Sedan       0.89      0.38      0.53        21
+                              Acura ZDX Hatchback       0.85      0.85      0.85        13
+              Aston Martin V8 Vantage Convertible       0.40      0.46      0.43        13
+                    Aston Martin V8 Vantage Coupe       0.60      0.50      0.55        12
+                  Aston Martin Virage Convertible       0.67      0.77      0.71        13
+                        Aston Martin Virage Coupe       0.86      0.80      0.83        15
+                                   Audi 100 Sedan       0.60      0.40      0.48        15
+                                   Audi 100 Wagon       0.54      0.81      0.65        16
+                                    Audi A5 Coupe       0.46      0.76      0.58        17
+                                    Audi R8 Coupe       0.60      0.82      0.69        11
+                            Audi RS 4 Convertible       0.61      0.85      0.71        13
+                                    Audi S4 Sedan       0.41      0.55      0.47        22
+                              Audi S5 Convertible       0.50      0.53      0.52        15
+                                    Audi S5 Coupe       0.50      0.26      0.34        19
+                                    Audi S6 Sedan       0.56      0.70      0.62        20
+                                Audi TT Hatchback       0.53      0.53      0.53        17
+                                 Audi TT RS Coupe       0.58      0.85      0.69        13
+                                   Audi TTS Coupe       0.75      0.47      0.58        19
+                                    Audi V8 Sedan       0.50      0.46      0.48        13
+                         BMW 1 Series Convertible       0.78      0.41      0.54        17
+                               BMW 1 Series Coupe       0.83      0.56      0.67        18
+                               BMW 3 Series Sedan       0.88      0.70      0.78        20
+                               BMW 3 Series Wagon       0.80      0.67      0.73        12
+                         BMW 6 Series Convertible       0.94      0.65      0.77        23
+                         BMW ActiveHybrid 5 Sedan       0.72      0.87      0.79        15
+                                     BMW M3 Coupe       0.73      0.67      0.70        12
+                                     BMW M5 Sedan       0.77      0.56      0.65        18
+                               BMW M6 Convertible       0.50      0.69      0.58        16
+                                       BMW X3 SUV       0.71      0.79      0.75        19
+                                       BMW X5 SUV       0.67      0.67      0.67        15
+                                       BMW X6 SUV       0.91      0.56      0.69        18
+                               BMW Z4 Convertible       0.71      0.80      0.75        15
+                             Bentley Arnage Sedan       0.85      0.69      0.76        16
+            Bentley Continental Flying Spur Sedan       0.73      0.50      0.59        16
+                     Bentley Continental GT Coupe       0.76      0.76      0.76        38
+Bentley Continental Supersports Conv. Convertible       0.57      0.57      0.57         7
+                           Bentley Mulsanne Sedan       0.82      0.93      0.87        15
+                  Bugatti Veyron 16.4 Convertible       0.62      0.71      0.67        14
+                        Bugatti Veyron 16.4 Coupe       0.88      0.71      0.79        21
+                                Buick Enclave SUV       0.80      0.87      0.83        23
+                                Buick Rainier SUV       0.71      0.62      0.67        16
+                                   Buick Regal GS       0.86      0.75      0.80         8
+                               Buick Verano Sedan       0.93      0.88      0.90        16
+                             Cadillac CTS-V Sedan       1.00      0.81      0.90        27
+                   Cadillac Escalade EXT Crew Cab       0.78      0.82      0.80        17
+                                 Cadillac SRX SUV       0.83      0.94      0.88        16
+                     Chevrolet Avalanche Crew Cab       0.88      0.58      0.70        12
+                     Chevrolet Camaro Convertible       0.74      0.70      0.72        20
+                              Chevrolet Cobalt SS       1.00      0.50      0.67        14
+                   Chevrolet Corvette Convertible       0.77      0.62      0.69        16
+       Chevrolet Corvette Ron Fellows Edition Z06       0.75      0.82      0.78        11
+                           Chevrolet Corvette ZR1       0.68      0.72      0.70        18
+                      Chevrolet Express Cargo Van       0.67      0.50      0.57        12
+                            Chevrolet Express Van       0.43      0.40      0.41        15
+                                 Chevrolet HHR SS       1.00      0.75      0.86        12
+                           Chevrolet Impala Sedan       0.85      0.65      0.73        17
+                    Chevrolet Malibu Hybrid Sedan       0.69      0.65      0.67        17
+                           Chevrolet Malibu Sedan       0.93      0.57      0.70        23
+                      Chevrolet Monte Carlo Coupe       0.94      0.71      0.81        21
+    Chevrolet Silverado 1500 Classic Extended Cab       0.88      0.94      0.91        16
+            Chevrolet Silverado 1500 Extended Cab       0.50      0.60      0.55        20
+         Chevrolet Silverado 1500 Hybrid Crew Cab       0.75      0.18      0.29        17
+             Chevrolet Silverado 1500 Regular Cab       0.53      0.87      0.66        23
+           Chevrolet Silverado 2500HD Regular Cab       0.60      0.27      0.37        11
+                            Chevrolet Sonic Sedan       0.73      0.85      0.79        13
+                       Chevrolet Tahoe Hybrid SUV       0.73      0.50      0.59        16
+                         Chevrolet TrailBlazer SS       0.76      0.87      0.81        15
+                           Chevrolet Traverse SUV       0.82      0.82      0.82        17
+                               Chrysler 300 SRT-8       0.53      0.90      0.67        21
+                               Chrysler Aspen SUV       0.75      0.65      0.70        23
+                   Chrysler Crossfire Convertible       1.00      0.81      0.90        16
+                  Chrysler PT Cruiser Convertible       1.00      0.95      0.97        20
+                     Chrysler Sebring Convertible       0.91      0.91      0.91        11
+                Chrysler Town and Country Minivan       0.71      0.80      0.75        15
+                              Daewoo Nubira Wagon       0.69      0.75      0.72        12
+                              Dodge Caliber Wagon       0.95      0.91      0.93        23
+                            Dodge Caravan Minivan       0.84      1.00      0.91        21
+                            Dodge Challenger SRT8       0.77      1.00      0.87        10
+                              Dodge Charger SRT-8       0.90      0.72      0.80        25
+                              Dodge Charger Sedan       0.67      0.67      0.67        18
+                            Dodge Dakota Club Cab       0.93      0.88      0.90        16
+                            Dodge Dakota Crew Cab       1.00      0.93      0.97        15
+                                Dodge Durango SUV       0.83      0.77      0.80        39
+                                Dodge Journey SUV       0.78      0.78      0.78        18
+                               Dodge Magnum Wagon       0.64      0.78      0.70        18
+                   Dodge Ram Pickup 3500 Crew Cab       1.00      0.67      0.80         9
+                   Dodge Ram Pickup 3500 Quad Cab       0.90      0.75      0.82        12
+                         Dodge Sprinter Cargo Van       0.92      0.69      0.79        16
+                            Eagle Talon Hatchback       0.77      0.56      0.65        18
+                                  FIAT 500 Abarth       1.00      1.00      1.00        12
+                             FIAT 500 Convertible       0.94      0.94      0.94        17
+                   Ferrari 458 Italia Convertible       0.67      0.71      0.69        17
+                         Ferrari 458 Italia Coupe       0.62      0.62      0.62        16
+                   Ferrari California Convertible       0.68      0.87      0.76        15
+                                 Ferrari FF Coupe       0.68      0.83      0.75        18
+                               Fisker Karma Sedan       0.53      0.67      0.59        12
+                          Ford E-Series Wagon Van       0.78      0.88      0.82         8
+                                    Ford Edge SUV       0.87      0.65      0.74        20
+                           Ford Expedition EL SUV       0.67      0.91      0.77        11
+                           Ford F-150 Regular Cab       0.67      0.94      0.78        33
+                   Ford F-450 Super Duty Crew Cab       1.00      1.00      1.00        16
+                                Ford Fiesta Sedan       0.80      0.80      0.80        15
+                                 Ford Focus Sedan       0.89      0.81      0.85        21
+                            Ford Freestar Minivan       1.00      0.88      0.93        16
+                                    Ford GT Coupe       0.55      0.92      0.69        13
+                         Ford Mustang Convertible       0.62      0.59      0.60        22
+                             Ford Ranger SuperCab       1.00      0.56      0.72        16
+                                   GMC Acadia SUV       0.65      0.79      0.71        14
+                          GMC Canyon Extended Cab       0.67      0.62      0.65        16
+                                   GMC Savana Van       0.76      0.85      0.80        33
+                                  GMC Terrain SUV       0.71      0.85      0.77        20
+                             GMC Yukon Hybrid SUV       0.88      0.72      0.79        29
+                            Geo Metro Convertible       1.00      0.86      0.93        22
+                           HUMMER H2 SUT Crew Cab       0.93      0.76      0.84        17
+                              HUMMER H3T Crew Cab       0.84      0.89      0.86        18
+                               Honda Accord Coupe       1.00      0.62      0.77        16
+                               Honda Accord Sedan       0.65      0.65      0.65        17
+                            Honda Odyssey Minivan       0.72      0.92      0.80        36
+                             Hyundai Accent Sedan       0.89      0.73      0.80        11
+                              Hyundai Azera Sedan       0.70      0.80      0.74        20
+                            Hyundai Elantra Sedan       0.83      0.83      0.83        12
+                Hyundai Elantra Touring Hatchback       0.67      0.75      0.71        16
+                            Hyundai Genesis Sedan       0.79      0.65      0.71        17
+                             Hyundai Santa Fe SUV       1.00      0.81      0.89        21
+                      Hyundai Sonata Hybrid Sedan       1.00      0.73      0.85        15
+                             Hyundai Sonata Sedan       0.75      0.83      0.79        18
+                               Hyundai Tucson SUV       1.00      0.91      0.95        11
+                       Hyundai Veloster Hatchback       0.76      0.86      0.81        22
+                             Hyundai Veracruz SUV       0.69      0.50      0.58        18
+                             Infiniti G Coupe IPL       0.78      0.64      0.70        11
+                                Infiniti QX56 SUV       0.92      0.92      0.92        12
+                               Isuzu Ascender SUV       0.83      0.71      0.77        14
+                                    Jaguar XK XKR       0.61      0.61      0.61        18
+                                 Jeep Compass SUV       0.88      0.88      0.88        24
+                          Jeep Grand Cherokee SUV       0.75      0.45      0.56        20
+                                 Jeep Liberty SUV       0.46      0.58      0.51        19
+                                 Jeep Patriot SUV       0.58      0.61      0.59        18
+                                Jeep Wrangler SUV       0.87      1.00      0.93        26
+                      Lamborghini Aventador Coupe       0.80      0.62      0.70        13
+                         Lamborghini Diablo Coupe       0.82      0.82      0.82        17
+       Lamborghini Gallardo LP 570-4 Superleggera       0.79      1.00      0.88        11
+                       Lamborghini Reventon Coupe       0.94      0.89      0.91        18
+                               Land Rover LR2 SUV       0.59      0.77      0.67        13
+                       Land Rover Range Rover SUV       1.00      0.90      0.95        21
+                           Lincoln Town Car Sedan       0.95      0.90      0.92        20
+                 MINI Cooper Roadster Convertible       0.87      0.93      0.90        14
+                    Maybach Landaulet Convertible       0.60      0.82      0.69        11
+                                Mazda Tribute SUV       0.32      0.73      0.44        11
+                            McLaren MP4-12C Coupe       0.81      0.96      0.88        23
+              Mercedes-Benz 300-Class Convertible       0.93      0.70      0.80        20
+                      Mercedes-Benz C-Class Sedan       0.92      0.67      0.77        18
+                      Mercedes-Benz E-Class Sedan       0.53      0.67      0.59        12
+                      Mercedes-Benz S-Class Sedan       0.70      0.82      0.76        17
+                     Mercedes-Benz SL-Class Coupe       0.67      0.67      0.67        12
+                       Mercedes-Benz Sprinter Van       0.79      0.94      0.86        16
+                          Mitsubishi Lancer Sedan       0.59      0.67      0.62        15
+                               Nissan 240SX Coupe       1.00      0.81      0.90        16
+                            Nissan Juke Hatchback       0.71      0.86      0.77        14
+                            Nissan Leaf Hatchback       0.76      0.94      0.84        17
+                          Nissan NV Passenger Van       0.79      0.92      0.85        12
+                              Plymouth Neon Coupe       0.71      0.77      0.74        13
+                           Porsche Panamera Sedan       0.65      0.81      0.72        16
+                        Ram C/V Cargo Van Minivan       1.00      0.75      0.86        12
+                          Rolls-Royce Ghost Sedan       0.80      1.00      0.89        12
+   Rolls-Royce Phantom Drophead Coupe Convertible       1.00      0.76      0.87        17
+                        Rolls-Royce Phantom Sedan       0.52      0.86      0.65        14
+                               Scion xD Hatchback       0.92      0.73      0.81        15
+                            Spyker C8 Convertible       0.96      0.89      0.92        27
+                                  Spyker C8 Coupe       0.87      0.72      0.79        18
+                               Suzuki Aerio Sedan       0.62      0.67      0.65        15
+                             Suzuki Kizashi Sedan       0.68      0.68      0.68        28
+                             Suzuki SX4 Hatchback       0.73      0.84      0.78        19
+                                 Suzuki SX4 Sedan       0.56      0.42      0.48        12
+                              Tesla Model S Sedan       0.84      0.84      0.84        19
+                               Toyota 4Runner SUV       1.00      0.79      0.88        19
+                               Toyota Camry Sedan       0.40      0.67      0.50        15
+                             Toyota Corolla Sedan       0.47      0.47      0.47        17
+                               Toyota Sequoia SUV       0.89      1.00      0.94        16
+                      Volkswagen Beetle Hatchback       0.67      1.00      0.80        12
+                        Volkswagen Golf Hatchback       0.69      0.62      0.66        32
+                                  Volvo 240 Sedan       0.89      1.00      0.94        17
+                              Volvo C30 Hatchback       0.77      0.74      0.75        27
+                                   Volvo XC90 SUV       0.86      0.67      0.75        18
+                         smart fortwo Convertible       0.81      0.93      0.87        14
+
+                                        micro avg       0.74      0.74      0.74      3237
+                                        macro avg       0.76      0.74      0.74      3237
+                                     weighted avg       0.77      0.74      0.74      3237
