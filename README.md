@@ -20,3 +20,7 @@ The code was written and tested on Ubuntu 16.04, and the following tools/libs we
 * Keras 2.2.4
 
 Make sure you have these installed in order to run the code successfully.
+
+## Usage
+
+
