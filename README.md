@@ -40,7 +40,7 @@ and put it under **"yolo-coco"** folder in my codebase.
 Having done the above steps, we are now ready to do the interesting stuff. To perform the classification task, please
 run the following script:
 
-```python
+```
 python classify.py --image samples/Ford_FiestaSedan.jpg
 ```
 
