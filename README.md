@@ -64,7 +64,7 @@ image with a bounding box for the car and the prediction. Here are a few example
 
 ### Training
 
-I've provided a trained model in the link above, which is ready for use. However if by any chance you would like to re-run
+I've provided a trained model in the link above, which is ready for classification usage. However if by any chance you would like to re-run
 the model training, please run the following script:
 
 ```
@@ -73,6 +73,13 @@ python myvgg_net_train.py
 
 Please note that you will probably need a GPU to train my model. For your reference, I run my model training on Amazon 
 Web Service with a Tesla K80 GPU (the p2.xlarge EC2 instance).
+
+It may take a good few hours depending on your machine specification. After it completes, it will create a pickle file named myvgg_labels.pickle 
+and four models named model_1.model, model_2.model, model_3.model and myvgg.model in the "models" folder. The first three models are created from
+training three fine-tuned VGGNet, and the last model is an ensemble model of the first three. I will explain the technical details
+of the training process later. For now you can use the myvgg.model file for classification as described in the section above.
+
+
 
 
 
