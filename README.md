@@ -25,16 +25,16 @@ Make sure you have these installed in order to run the code successfully.
 
 ### Classification
 
-First please clone or download [this repository](https://github.com/minhthangdang/GrabAI).
+First please clone or download this repository.
 
 A deep learning model has been created for classification task. However, this model is too large for github, so I've uploaded it 
 to Google drive. You need to download [my deep
-learning model here](https://drive.google.com/open?id=14tsq_x5b4CP8gzaFh_It3ZqzV8owkoC6) 
+learning model - myvgg.model](https://drive.google.com/open?id=14tsq_x5b4CP8gzaFh_It3ZqzV8owkoC6) 
 and put it under **"models"** folder in my codebase.
 
 In my classifying process, I've utilised [YOLO from Darknet](https://pjreddie.com/darknet/yolo/) for the task of car localisation. 
 So in addition to my deep learning model above, you also need to download 
-[the weights for YOLO here](https://drive.google.com/open?id=1PAba0klLoELLp9F1DaGAwGyVXXQGOCA0)
+[the weights for YOLO - yolov3.weights](https://drive.google.com/open?id=1PAba0klLoELLp9F1DaGAwGyVXXQGOCA0)
 and put it under **"yolo-coco"** folder in my codebase.
 
 Having done the above steps, we are now ready to do the interesting stuff. To perform the classification task, please
@@ -65,7 +65,16 @@ image with a bounding box for the car and the prediction. Here are a few example
 ### Training
 
 I've provided a trained model in the link above, which is ready for classification usage. However if by any chance you would like to re-run
-the model training, please run the following script:
+the model training, please follow the below steps.
+
+First you need to download the Cars dataset provided by Stanford [here](http://imagenet.stanford.edu/internal/car196/car_ims.tgz).
+After it's downloaded, put it to the root folder of this repository and unpack it by running:
+
+```
+tar -xvzf car_ims.tgz
+```
+
+It will unpack all the images to "car_ims" folder. We can now run the script which trains the model:
 
 ```
 python myvgg_net_train.py
@@ -78,6 +87,8 @@ It may take a good few hours depending on your machine specification. After it c
 and four models named model_1.model, model_2.model, model_3.model and myvgg.model in the "models" folder. The first three models are created from
 training three fine-tuned VGGNet, and the last model is an ensemble model of the first three. I will explain the technical details
 of the training process later. For now you can use the myvgg.model file for classification as described in the section above.
+
+
 
 
 

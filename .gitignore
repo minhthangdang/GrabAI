@@ -1,6 +1,4 @@
 *.tgz
-validate/*
 car_ims/*
 __pycache__/*
 myvgg.model
-plot.png
