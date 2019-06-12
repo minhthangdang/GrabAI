@@ -88,6 +88,15 @@ and four models named model_1.model, model_2.model, model_3.model and myvgg.mode
 training three fine-tuned VGGNet, and the last model is an ensemble model of the first three. I will explain the technical details
 of the training process later. For now you can use the myvgg.model file for classification as described in the section above.
 
+## Technical Details
+
+### Preparation
+
+### Feature Engineering
+
+ 
+
+## Room for Improvement
 
 
 
