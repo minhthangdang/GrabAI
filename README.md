@@ -25,7 +25,7 @@ Make sure you have these installed in order to run the code successfully.
 
 ### Classification
 
-First please clone or download this repository.
+First please clone or download [this repository](https://github.com/minhthangdang/GrabAI).
 
 A deep learning model has been created for classification task. However, this model is too large for github, so I've uploaded it 
 to Google drive. You need to download [my deep
@@ -53,13 +53,15 @@ If everything is configured correctly you can see the process running:
 It will output the make, model and confidence score for the car in the image, for example "Ford Fiesta Sedan: 47.69%". It will also show the
 image with a bounding box for the car and the prediction. Here are a few examples:
 
-![Ford Fiesta Sedan](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Ford-Fiesta-Sedan.JPG)
+| Ford Fiesta | Ford GT Coupe |
+| --- | --- |
+| ![Ford Fiesta Sedan](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Ford-Fiesta-Sedan.JPG) | ![Ford GT Coupe](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Ford-GT-Coup.JPG) |
 
-![Ford GT Coupe](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Ford-GT-Coup.JPG)
+| Hyundai Santa Fe SUV | Jeep Patriot SUV |
+| --- | --- |
+| ![Hyundai Santa Fe SUV](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Hyundai_SantaFe_SUV.JPG) | ![Jeep Patriot SUV](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Jeep-Patriot-SUV.JPG) | 
 
-![Hyundai Santa Fe SUV](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Hyundai_SantaFe_SUV.JPG)
 
-![Jeep Patriot SUV](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Jeep-Patriot-SUV.JPG) 
 
 
 
