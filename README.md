@@ -204,10 +204,48 @@ def ensemble_models(models, model_input):
     return model_ens
 ```
 
+### Evaluation
+
 Under the "reports" folder there are [report_1.txt](reports/report_1.txt), [report_2.txt](reports/report_2.txt) and
-[report_3.txt](reports/report_3.txt) which are the classification reports on the test data for model_1, model_2 and model_3
-respectively.
- 
+[report_3.txt](reports/report_3.txt) which are the classification reports on the test data for model_1 (using Adam optimizer), 
+model_2 (using RMSprop optimizer) and model_3 (using Adagrad optimizer) respectively. 
+The average precision, recall, and f1-score for each single model can be seen in the tables below:
+
+**model_1 (using Adam optimizer):**
+
+|              |Precision |Recall   |f1-score |support |
+| ---          | ---      | ---     | ---     | ---
+|micro avg     |0.72      |0.72     |0.72     |3237 |
+|macro avg     |0.75      |0.72     |0.72     |3237 |
+|weighted avg  |0.76      |0.72     |0.72     |3237 |
+
+**model_2 (using RMSprop optimizer):**
+
+|              |Precision |Recall   |f1-score |support |
+| ---          | ---      | ---     | ---     | ---
+|micro avg     |0.69      |0.69     |0.69     |3237 |
+|macro avg     |0.74      |0.69     |0.69     |3237 |
+|weighted avg  |0.74      |0.69     |0.69     |3237 |
+
+**model_3 (using Adagrad optimizer):**
+
+|              |Precision |Recall   |f1-score |support |
+| ---          | ---      | ---     | ---     | ---
+|micro avg     |0.74      |0.74     |0.74     |3237 |
+|macro avg     |0.76      |0.74     |0.74     |3237 |
+|weighted avg  |0.77      |0.74     |0.74     |3237 |
+
+There is also an [ens_report.txt](reports/ens_report.txt) which is the classification report for the ensemble model:
+
+**ensemble model:**
+
+|              |Precision |Recall   |f1-score |support |
+| ---          | ---      | ---     | ---     | ---
+|micro avg     |0.77      |0.77     |0.77     |3237 |
+|macro avg     |0.79      |0.77     |0.77     |3237 |
+|weighted avg  |0.79      |0.77     |0.77     |3237 |
+
+It's clear that the ensemble model performs better than the individual ones.
 
 ## Room for Improvement
 
