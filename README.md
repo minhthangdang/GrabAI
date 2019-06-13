@@ -247,6 +247,25 @@ There is also an [ens_report.txt](reports/ens_report.txt) which is the classific
 
 It's clear that the ensemble model performs better than the individual ones.
 
+### Classifying and the YOLO network
+
+One extra point of my solution that is worth noting here is the use of [YOLO network](https://pjreddie.com/darknet/yolo/) 
+for the task of car localisation. 
+
+As described in the [preprocess section](#preprocess), the images used for training are taken from the bounding boxes of
+the original images, i.e. the precise areas that contains the cars only. So in my *classify.py* file where the classification
+is actually performed, before an image input is fed through the network for prediction, the bounding box for the car in the 
+image is extracted thanks to the use of YOLO network:
+
+```python
+# get the car bounding box
+(x, y, width, height) = detect_bounding_box(image)
+# extract the area which contains the car
+image = image[y:y + height, x:x + width]
+```
+
+The task of car detection is implemented in the method *detect_bounding_box* in the file *car_detect.py*.
+
 ## Room for Improvement
 
 * As with many other deep learning models, the more data the better. The dataset provided by Stanford has 16,185 images
