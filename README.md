@@ -57,14 +57,14 @@ image with a bounding box for the car and the prediction. Here are a few example
 | --- | --- |
 | ![Ford Fiesta Sedan](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Ford-Fiesta-Sedan.JPG) | ![Toyota Camry Sedan](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Toyota-Camry-Sedan.JPG) |
 
-| Hyundai Santa Fe SUV | Jeep Patriot SUV |
+| Hyundai Santa Fe SUV | Cadillac CTS-V Sedan |
 | --- | --- |
-| ![Hyundai Santa Fe SUV](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Hyundai_SantaFe_SUV.JPG) | ![Jeep Patriot SUV](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Jeep-Patriot-SUV.JPG) | 
+| ![Hyundai Santa Fe SUV](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Hyundai_SantaFe_SUV.JPG) | ![Cadillac CTS-V Sedan](https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Cadillac-CTSV-Sedan.JPG) | 
 
 
 ### Training
 
-I've provided a trained model in the link above, which is ready for classification usage. However if by any chance you would like to re-run
+A trained model has been provided in the link above, which is ready for classification usage. However if by any chance you would like to re-run
 the model training, please follow the below steps.
 
 First you need to download the Cars dataset provided by Stanford [here](http://imagenet.stanford.edu/internal/car196/car_ims.tgz).
@@ -97,6 +97,22 @@ of the training process later. For now you can use the myvgg.model file for clas
  
 
 ## Room for Improvement
+
+* As with many other deep learning models, the more data the better. The dataset provided by Stanford has 16,185 images
+for 196 make and model classes. This is considered "small" data in the world of deep learning. Moreover there are imbalances 
+where some classes are overrepresented (e.g. Audi and BMW) while others (e.g. Tesla) have only a few dozens. Hence one way
+to improve the performance of the system is to feed more data to the neural networks. This will definitely increase the
+accuracy of the prediction. Within the time constraint of this challenge, I did not have enough time to collect more data, but
+this is a key point for future enhancement.
+
+* In my project I combined three deep learning models into an ensemble, and each model was run with 10 epochs. This could be
+improved by having more deep learning models (5 to 10 models) for the ensemble and more epochs for each model. Again this
+was not done due to time and resources constraint.
+
+* Experiments with more networks. During the course of this project, I experimented with only 2 deep learning networks: 
+VGG16 and ResNet50. There are several other networks such as AlexNet, GoogLeNet, etc. which I did not have time to try.
+Better performance may be yielded by exploring other networks.
+
 
 
 
