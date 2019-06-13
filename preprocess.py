@@ -6,7 +6,7 @@ import cv2 # opencv
 from keras.preprocessing.image import img_to_array # convert image to array
 import numpy as np # numpy
 from sklearn.preprocessing import LabelBinarizer # required for labels binarizing
-from keras.applications.resnet50 import preprocess_input
+
 
 # this will build data and labels from disk
 def build_data_and_labels():

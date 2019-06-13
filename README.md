@@ -92,7 +92,31 @@ of the training process later. For now you can use the myvgg.model file for clas
 
 ### Preparation
 
+The Stanford Cars dataset is accompanied with [devkit](https://ai.stanford.edu/~jkrause/cars/car_devkit.tgz) which includes
+the class labels and bounding boxes for all images. These are provided in matlab format and I've converted them into
+CSV files for easy manipulation. These CSV files are located under "annotations" folder where:
+
+* annotations.csv contains the annotations (image path, label id, bounding box coordinates, etc.) for each image.
+
+* class_names.csv contains all the class names.
+
+### Preprocess
+
+A preprocess step is carried out before the actual model training. This is written in the method *build_data_and_labels* in the file *preprocess.py*
+
+In this method, the following are performed:
+
+* Read the annotations and remove the year from the class names, so that it's left with make and model only
+
+* Utilise the bounding box and retain the image section within the bounding box only. We will use these cropped images
+for training rather than the whole images as it reduces the noise and yields better performance.
+
+* In my model training, I use VGG16 network as the base model, so each image is normalised according to VGG-specific setup 
+such as image resize (224x224), mean subtraction,  etc.
+
+
 ### Feature Engineering
+
 
  
 
