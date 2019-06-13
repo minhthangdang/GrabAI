@@ -255,7 +255,7 @@ for the task of car localisation.
 As described in the [preprocess section](#preprocess), the images used for training are taken from the bounding boxes of
 the original images, i.e. the precise areas that contains the cars only. So in my *classify.py* file where the classification
 is actually performed, before an image input is fed through the network for prediction, the bounding box for the car in the 
-image is extracted thanks to the use of YOLO network:
+image is extracted:
 
 ```python
 # get the car bounding box
@@ -264,7 +264,7 @@ image is extracted thanks to the use of YOLO network:
 image = image[y:y + height, x:x + width]
 ```
 
-The task of car detection is implemented in the method *detect_bounding_box* in the file *car_detect.py*.
+The task of car detection is implemented in the method *detect_bounding_box* in the file *car_detect.py* thanks to the use of YOLO network.
 
 ## Room for Improvement
 
