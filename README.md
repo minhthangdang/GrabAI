@@ -118,25 +118,53 @@ such as image resize (224x224), mean subtraction,  etc.
 ### Feature Engineering
 
 Since 2013 when the Stanford Cars dataset was first introduced, hand-crafted features for classification problems have been
-fade away and replaced by deep learning models. It has been proved that deep learning models have performed
-consistently and extremely well such as in the ImageNet Large Scale Visual Recognition Challenge where GoogLeNet and VGGNet was the winner 
-and runner-up respectively in 2014, and ResNet was the winner in 2015. At the moment deep learning is the de-facto choice
-for image classification as well as many other computer vision problems.
+outperformed by deep learning models. It has been proved that deep learning models have performed
+consistently and extremely well such as in the [ImageNet Large Scale Visual Recognition Challenge](http://image-net.org/challenges/LSVRC/) 
+where [GoogLeNet](https://ai.google/research/pubs/pub43022) and [VGGNet](https://arxiv.org/abs/1409.1556) was the winner 
+and runner-up respectively in 2014, and [ResNet](https://arxiv.org/abs/1512.03385) was the winner in 2015. At the moment 
+deep learning is the de-facto state-of-the-art choice for image classification as well as many other computer vision problems.
 
-In my project I applied the transfer learning method where I re-used an existing pre-trained deep learning network as the starting point for 
-the task of predicting make and model of a car image. Initially I decided to pick out VGG16 and ResNet50 for experiments.
+In my project I applied the [transfer learning method](https://towardsdatascience.com/a-comprehensive-hands-on-guide-to-transfer-learning-with-real-world-applications-in-deep-learning-212bf3b2f27a)
+where I re-used an existing pre-trained deep learning network as the starting point for the task of predicting make and model 
+of a car image. Initially I decided to pick out VGG16 and ResNet50 networks for experiments.
 
-After playing around with both models, it appeared that the VGG16 performed better ResNet50 for the sake of this task. Therefore
-I discarded the ResNet50 model and continued with VGG16.
+After some quick experiments, it appeared that the VGG16 performed better than ResNet50 for the sake of this task. Therefore
+I discarded the ResNet50 and continued with VGG16.
 
-The file *myvggnet/myvggnet.py* contains my network model. In the *build* method it initialises the VGG16 network without the 
-fully connected layer. Keras and Tensorflow are used for easy building and training of my network. The first time you
-run it, the VGG16 weights is downloaded automatically if it's not downloaded before. 
+The file *myvggnet/myvggnet.py* contains my network model. Keras and Tensorflow are utilised for building my network.
+In the *build* method it initialises the VGG16 network without the fully connected layer. The first time you
+run it, the VGG16 weights is downloaded automatically if it's not downloaded before:
 
-As part of transfer learning, all the layers in VGG16 are frozen. After that I put on top my fully connected layer and a 
-*softmax* activation to complete my network. 
+```python
+conv_base = VGG16(weights="imagenet", include_top=False, input_shape=config.IMAGE_DIMS)
+```
 
-The file *myvgg_net_train.py* is responsible for training my model. 
+As part of transfer learning, all the layers in VGG16 are frozen:
+
+```python
+for layer in conv_base.layers:
+    layer.trainable = False
+```
+ 
+After that I add my fully connected layer and a *softmax* activation to complete my network:
+
+```python
+model = Sequential()
+model.add(conv_base)
+        
+model.add(Flatten())
+model.add(Dense(1024))
+model.add(Activation("relu"))
+model.add(BatchNormalization())
+model.add(Dropout(0.5))
+
+model.add(Dense(classes))
+model.add(Activation(finalAct))
+``` 
+
+Now the model is ready for training. The file *myvgg_net_train.py* is responsible for training my model.
+First the preprocess step is taken. The processed dataset is then split 80:20 for train and test data respectively.
+[ImageDataGenerator](https://keras.io/preprocessing/image/) is used to generate more data for the training.
 
 
  
