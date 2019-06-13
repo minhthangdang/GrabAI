@@ -86,14 +86,14 @@ Web Service with a Tesla K80 GPU (the p2.xlarge EC2 instance).
 It may take a good few hours depending on your machine specification. After it completes, it will create a pickle file named myvgg_labels.pickle 
 and four models named model_1.model, model_2.model, model_3.model and myvgg.model in the "models" folder. The first three models are created from
 training three fine-tuned VGGNet, and the last model is an ensemble model of the first three. I will explain the technical details
-of the training process later. For now you can use the myvgg.model file for classification as described in the section above.
+of the training process later. For now you can use the myvgg.model file for classification as described in the [section above](#classification).
 
 ## Technical Details
 
 ### Preparation
 
 The Stanford Cars dataset is accompanied with a [devkit](https://ai.stanford.edu/~jkrause/cars/car_devkit.tgz) which includes
-the class labels and bounding boxes for all images. These are provided in matlab format and I've converted them into
+the class labels and bounding boxes for all images. These are provided in matlab format and have been converted into
 CSV files for easy manipulation. These CSV files are located under "annotations" folder where:
 
 * *annotations.csv* contains the annotations (image path, label id, bounding box coordinates, etc.) for each image.
@@ -102,7 +102,7 @@ CSV files for easy manipulation. These CSV files are located under "annotations"
 
 ### Preprocess
 
-A preprocess step is carried out before the actual model training. This is written in the method *build_data_and_labels* in the file *preprocess.py*
+A preprocess step is needed before the actual model training. This is written in the method *build_data_and_labels* in the file *preprocess.py*
 
 In this method, the following are performed:
 
@@ -112,7 +112,7 @@ In this method, the following are performed:
 for training rather than the whole images as it reduces the noise and yields better performance.
 
 * In my model training, I use VGG16 network as the base model, so each image is normalised according to VGG-specific setup 
-such as image resize (224x224), mean subtraction,  etc.
+such as image resize (224x224), mean subtraction, etc.
 
 
 ### Feature Engineering
@@ -146,7 +146,7 @@ for layer in conv_base.layers:
     layer.trainable = False
 ```
  
-After that I add my fully connected layer and a *softmax* activation to complete my network:
+After that a fully connected layer is added and it completes with a *softmax* activation:
 
 ```python
 model = Sequential()
@@ -163,8 +163,26 @@ model.add(Activation(finalAct))
 ``` 
 
 Now the model is ready for training. The file *myvgg_net_train.py* is responsible for training my model.
-First the preprocess step is taken. The processed dataset is then split 80:20 for train and test data respectively.
-[ImageDataGenerator](https://keras.io/preprocessing/image/) is used to generate more data for the training.
+First the dataset is gone through the preprocess step as [described above](#preprocess):
+
+```python
+data, labels, label_binarizer = preprocess.build_data_and_labels()
+```
+ 
+The processed dataset is then split 80:20 for train and test data respectively:
+
+```python
+(trainX, testX, trainY, testY) = train_test_split(data, labels, test_size=0.2, random_state=config.RANDOM_SEED)
+```
+
+[ImageDataGenerator](https://keras.io/preprocessing/image/) is used to generate more data for the training:
+
+```python
+aug = ImageDataGenerator(rotation_range=25, width_shift_range=0.1,
+	height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
+	horizontal_flip=True, fill_mode="nearest")
+```
+
 
 
  
