@@ -249,8 +249,8 @@ It's clear that the ensemble model performs better than the individual ones.
 
 ### Classifying and the YOLO network
 
-One extra point of my solution that is worth noting here is the use of [YOLO network](https://pjreddie.com/darknet/yolo/) 
-for the task of car localisation. 
+One extra point of my solution that is worth noting here is the use of [YOLO network from Darknet](https://pjreddie.com/darknet/yolo/) 
+for the task of car detection. 
 
 As described in the [preprocess section](#preprocess), the images used for training are taken from the bounding boxes of
 the original images, i.e. the precise areas that contains the cars only. So in my *classify.py* file where the classification
