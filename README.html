@@ -1,0 +1,278 @@
+<h1 id="grab-ais-computer-vision-challenge-2019">Grab AI's Computer Vision Challenge 2019</h1>
+<h2 id="introduction">Introduction</h2>
+<p>This project is created as a submission for the <a href="https://www.aiforsea.com/computer-vision">Grab AI's Computer Vision Challenge 2019</a></p>
+<h2 id="problem-statement">Problem Statement</h2>
+<p>Given a <a href="https://ai.stanford.edu/~jkrause/cars/car_dataset.html">dataset</a> of distinct car images , can you automatically recognize the car model and make?</p>
+<h2 id="installation">Installation</h2>
+<p>The code was written and tested on Ubuntu 16.04, and the following packages were used:</p>
+<ul>
+    <li>Python 3.6.7</li>
+    <li>OpenCV 4.0.0</li>
+    <li>Numpy 1.16.2</li>
+    <li>scikit-learn 0.20.3</li>
+    <li>matplotlib 3.0.2</li>
+    <li>Tensorflow 1.12.0</li>
+    <li>Keras 2.2.4</li>
+</ul>
+<p>Make sure you have these installed in order to run the code successfully.</p>
+<h2 id="usage">Usage</h2>
+<h3 id="classification">Classification</h3>
+<p>First please clone or download this repository.</p>
+<p>A deep learning model has been created for classification task. However, this model is too large for github, so I've uploaded it to Google drive. You need to download <a href="https://drive.google.com/open?id=14tsq_x5b4CP8gzaFh_It3ZqzV8owkoC6">my deep learning model - myvgg.model</a> and put it under <strong>&quot;models&quot;</strong> folder in my codebase.</p>
+<p>In my classifying process, I've utilised <a href="https://pjreddie.com/darknet/yolo/">YOLO from Darknet</a> for the task of car localisation. So in addition to my deep learning model above, you also need to download <a href="https://drive.google.com/open?id=1PAba0klLoELLp9F1DaGAwGyVXXQGOCA0">the weights for YOLO - yolov3.weights</a> and put it under <strong>&quot;yolo-coco&quot;</strong> folder in my codebase.</p>
+<p>Having done the above steps, we are now ready to do the interesting stuff. To perform the classification task, please run the following script:</p>
+<pre><code>python classify.py --image samples/Ford_FiestaSedan.jpg</code></pre>
+<p>In which &quot;samples/Ford_FiestaSedan.jpg&quot; is the path to the image.</p>
+<p>If everything is configured correctly you can see the process running:</p>
+<div class="figure">
+<img style="width:1200px" src="https://github.com/minhthangdang/minhthangdang.github.io/raw/master/running-classification.JPG" alt="Classification running" /><p class="caption">Classification running</p>
+</div>
+<p>It will output the make, model and confidence score for the car in the image, for example &quot;Ford Fiesta Sedan: 47.69%&quot;. It will also show the image with a bounding box for the car and the prediction. Here are a few examples:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Ford Fiesta</th>
+<th align="left">Toyota Camry Sedan</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><img style="width:600px" src="https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Ford-Fiesta-Sedan.JPG" alt="Ford Fiesta Sedan" /></td>
+<td align="left"><img style="width:600px" src="https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Toyota-Camry-Sedan.JPG" alt="Toyota Camry Sedan" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Hyundai Santa Fe SUV</th>
+<th align="left">Cadillac CTS-V Sedan</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><img style="width:600px" src="https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Hyundai_SantaFe_SUV.JPG" alt="Hyundai Santa Fe SUV" /></td>
+<td align="left"><img style="width:600px" src="https://raw.githubusercontent.com/minhthangdang/minhthangdang.github.io/master/Cadillac-CTSV-Sedan.JPG" alt="Cadillac CTS-V Sedan" /></td>
+</tr>
+</tbody>
+</table>
+<h3 id="training">Training</h3>
+<p>A trained model has been provided in the link above, which is ready for classification usage. However if by any chance you would like to re-run the model training, please follow the below steps.</p>
+<p>First you need to download the Cars dataset provided by Stanford <a href="http://imagenet.stanford.edu/internal/car196/car_ims.tgz">here</a>. After it's downloaded, put it to the root folder of this repository and unpack it by running:</p>
+<pre><code>tar -xvzf car_ims.tgz</code></pre>
+<p>It will unpack all the images to &quot;car_ims&quot; folder. We can now run the script which trains the model:</p>
+<pre><code>python myvgg_net_train.py</code></pre>
+<p>Please note that you will probably need a GPU to train my model. For your reference, I run my model training on Amazon Web Service with a Tesla K80 GPU (the p2.xlarge EC2 instance).</p>
+<p>It may take a good few hours depending on your machine specification. After it completes, it will create a pickle file named myvgg_labels.pickle and four models named model_1.model, model_2.model, model_3.model and myvgg.model in the &quot;models&quot; folder. The first three models are created from training three fine-tuned VGGNet, and the last model is an ensemble model of the first three. I will explain the technical details of the training process later. For now you can use the myvgg.model file for classification as described in the <a href="#classification">section above</a>.</p>
+<h2 id="technical-details">Technical Details</h2>
+<h3 id="preparation">Preparation</h3>
+<p>The Stanford Cars dataset is accompanied with a <a href="https://ai.stanford.edu/~jkrause/cars/car_devkit.tgz">devkit</a> which includes the class labels and bounding boxes for all images. These are provided in matlab format and have been converted into CSV files for easy manipulation. These CSV files are located under &quot;annotations&quot; folder where:</p>
+<ul>
+<li><p><em>annotations.csv</em> contains the annotations (image path, label id, bounding box coordinates, etc.) for each image.</p></li>
+<li><p><em>class_names.csv</em> contains all the class names.</p></li>
+</ul>
+<h3 id="preprocess">Preprocess</h3>
+<p>A preprocess step is needed before the actual model training. This is written in the method <em>build_data_and_labels</em> in the file <em>preprocess.py</em></p>
+<p>In this method, the following are performed:</p>
+<ul>
+<li><p>Read the annotations and remove the year from the class names, so that it's left with make and model only</p></li>
+<li><p>Utilise the bounding box and retain the image section within the bounding box only. We will use these cropped images for training rather than the whole images as it reduces the noise and yields better performance.</p></li>
+<li><p>In my model training, I use VGG16 network as the base model, so each image is normalised according to VGG-specific setup such as image resize (224x224), mean subtraction, etc.</p></li>
+</ul>
+<h3 id="feature-engineering">Feature Engineering</h3>
+<p>Since 2013 when the Stanford Cars dataset was first introduced, hand-crafted features for classification problems have been outperformed by deep learning models. It has been proved that deep learning models have performed consistently and extremely well such as in the <a href="http://image-net.org/challenges/LSVRC/">ImageNet Large Scale Visual Recognition Challenge</a> where <a href="https://ai.google/research/pubs/pub43022">GoogLeNet</a> and <a href="https://arxiv.org/abs/1409.1556">VGGNet</a> was the winner and runner-up respectively in 2014, and <a href="https://arxiv.org/abs/1512.03385">ResNet</a> was the winner in 2015. At the moment deep learning is the de-facto state-of-the-art choice for image classification as well as many other computer vision problems.</p>
+<p>In my project I applied the <a href="https://towardsdatascience.com/a-comprehensive-hands-on-guide-to-transfer-learning-with-real-world-applications-in-deep-learning-212bf3b2f27a">transfer learning method</a> where I re-used an existing pre-trained deep learning network as the starting point for the task of predicting make and model of a car image. Initially I decided to pick out VGG16 and ResNet50 networks for experiments.</p>
+<p>After some quick experiments, it appeared that the VGG16 performed better than ResNet50 for the sake of this task. Therefore I discarded the ResNet50 and continued with VGG16.</p>
+<p>The file <em>myvggnet/myvggnet.py</em> contains my network model. Keras and Tensorflow are utilised for building my network. In the <em>build</em> method it initialises the VGG16 network without the fully connected layer. The first time you run it, the VGG16 weights is downloaded automatically if it's not downloaded before:</p>
+<pre class="sourceCode python"><code class="sourceCode python">conv_base = VGG16(weights=<span class="st">&quot;imagenet&quot;</span>, include_top=<span class="ot">False</span>, input_shape=config.IMAGE_DIMS)</code></pre>
+<p>As part of transfer learning, all the layers in VGG16 are frozen:</p>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">for</span> layer in conv_base.layers:
+    layer.trainable = <span class="ot">False</span></code></pre>
+<p>After that a fully connected layer is added and it completes with a <em>softmax</em> activation:</p>
+<pre class="sourceCode python"><code class="sourceCode python">model = Sequential()
+model.add(conv_base)
+        
+model.add(Flatten())
+model.add(Dense(<span class="dv">1024</span>))
+model.add(Activation(<span class="st">&quot;relu&quot;</span>))
+model.add(BatchNormalization())
+model.add(Dropout(<span class="fl">0.5</span>))
+
+model.add(Dense(classes))
+model.add(Activation(finalAct))</code></pre>
+<p>Now the model is ready for training. The file <em>myvgg_net_train.py</em> is responsible for training my model. First the dataset is gone through the preprocess step as <a href="#preprocess">described above</a>:</p>
+<pre class="sourceCode python"><code class="sourceCode python">data, labels, label_binarizer = preprocess.build_data_and_labels()</code></pre>
+<p>The processed dataset is then split 80:20 for train and test data respectively:</p>
+<pre class="sourceCode python"><code class="sourceCode python">(trainX, testX, trainY, testY) = train_test_split(data, labels, test_size=<span class="fl">0.2</span>, random_state=config.RANDOM_SEED)</code></pre>
+<p><a href="https://keras.io/preprocessing/image/">ImageDataGenerator</a> is used to generate more data for the training:</p>
+<pre class="sourceCode python"><code class="sourceCode python">aug = ImageDataGenerator(rotation_range=<span class="dv">25</span>, width_shift_range=<span class="fl">0.1</span>,
+    height_shift_range=<span class="fl">0.1</span>, shear_range=<span class="fl">0.2</span>, zoom_range=<span class="fl">0.2</span>,
+    horizontal_flip=<span class="ot">True</span>, fill_mode=<span class="st">&quot;nearest&quot;</span>)</code></pre>
+<p>Initially I fine-tuned the hyper-parameters (optimizer, number of epochs, learning rate, etc.) for one model only and achieved a decent result (precision and recall were around 0.72 on the test data). However as pointed out by various papers such as <a href="https://arxiv.org/pdf/1704.01664.pdf">this</a> and <a href="https://ieeexplore.ieee.org/document/8404179">this</a>, ensemble methods can often perform better than a single model. <em>Ensemble</em> is a technique that combines several models to produce a new model which is presumably better than individual ones. There are various methods for ensemble such as unweighted average, weighted average, majority voting, stacking, etc. For the sake of simplicity, in this project I created three models with the same structure but each uses a different optimizer (Adam, RMSprop and Adagrad). After that an ensemble model is created using unweighted averaging. The code for ensemble is provided in the method <em>ensemble_models</em> in the file <em>myvggnet/myvggnet.py</em>:</p>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> ensemble_models(models, model_input):
+    <span class="co"># collect outputs of models in a list</span>
+    y_models = [model(model_input) <span class="kw">for</span> model in models]
+    <span class="co"># averaging outputs</span>
+    y_avg = layers.average(y_models)
+    <span class="co"># build model from same input and avg output</span>
+    model_ens = Model(inputs=model_input, outputs=y_avg, name=<span class="st">&#39;ensemble&#39;</span>)
+
+    <span class="kw">return</span> model_ens</code></pre>
+<h3 id="evaluation">Evaluation</h3>
+<p>Under the &quot;reports&quot; folder there are <a href="reports/report_1.txt">report_1.txt</a>, <a href="reports/report_2.txt">report_2.txt</a> and <a href="reports/report_3.txt">report_3.txt</a> which are the classification reports on the test data for model_1 (using Adam optimizer), model_2 (using RMSprop optimizer) and model_3 (using Adagrad optimizer) respectively. The average precision, recall, and f1-score for each single model can be seen in the tables below:</p>
+<p><strong>model_1 (using Adam optimizer):</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Precision</th>
+<th align="left">Recall</th>
+<th align="left">f1-score</th>
+<th align="left">support</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">micro avg</td>
+<td align="left">0.72</td>
+<td align="left">0.72</td>
+<td align="left">0.72</td>
+<td align="left">3237</td>
+</tr>
+<tr class="even">
+<td align="left">macro avg</td>
+<td align="left">0.75</td>
+<td align="left">0.72</td>
+<td align="left">0.72</td>
+<td align="left">3237</td>
+</tr>
+<tr class="odd">
+<td align="left">weighted avg</td>
+<td align="left">0.76</td>
+<td align="left">0.72</td>
+<td align="left">0.72</td>
+<td align="left">3237</td>
+</tr>
+</tbody>
+</table>
+<p><strong>model_2 (using RMSprop optimizer):</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Precision</th>
+<th align="left">Recall</th>
+<th align="left">f1-score</th>
+<th align="left">support</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">micro avg</td>
+<td align="left">0.69</td>
+<td align="left">0.69</td>
+<td align="left">0.69</td>
+<td align="left">3237</td>
+</tr>
+<tr class="even">
+<td align="left">macro avg</td>
+<td align="left">0.74</td>
+<td align="left">0.69</td>
+<td align="left">0.69</td>
+<td align="left">3237</td>
+</tr>
+<tr class="odd">
+<td align="left">weighted avg</td>
+<td align="left">0.74</td>
+<td align="left">0.69</td>
+<td align="left">0.69</td>
+<td align="left">3237</td>
+</tr>
+</tbody>
+</table>
+<p><strong>model_3 (using Adagrad optimizer):</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Precision</th>
+<th align="left">Recall</th>
+<th align="left">f1-score</th>
+<th align="left">support</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">micro avg</td>
+<td align="left">0.74</td>
+<td align="left">0.74</td>
+<td align="left">0.74</td>
+<td align="left">3237</td>
+</tr>
+<tr class="even">
+<td align="left">macro avg</td>
+<td align="left">0.76</td>
+<td align="left">0.74</td>
+<td align="left">0.74</td>
+<td align="left">3237</td>
+</tr>
+<tr class="odd">
+<td align="left">weighted avg</td>
+<td align="left">0.77</td>
+<td align="left">0.74</td>
+<td align="left">0.74</td>
+<td align="left">3237</td>
+</tr>
+</tbody>
+</table>
+<p>There is also an <a href="reports/ens_report.txt">ens_report.txt</a> which is the classification report for the ensemble model:</p>
+<p><strong>ensemble model:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Precision</th>
+<th align="left">Recall</th>
+<th align="left">f1-score</th>
+<th align="left">support</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">micro avg</td>
+<td align="left">0.77</td>
+<td align="left">0.77</td>
+<td align="left">0.77</td>
+<td align="left">3237</td>
+</tr>
+<tr class="even">
+<td align="left">macro avg</td>
+<td align="left">0.79</td>
+<td align="left">0.77</td>
+<td align="left">0.77</td>
+<td align="left">3237</td>
+</tr>
+<tr class="odd">
+<td align="left">weighted avg</td>
+<td align="left">0.79</td>
+<td align="left">0.77</td>
+<td align="left">0.77</td>
+<td align="left">3237</td>
+</tr>
+</tbody>
+</table>
+<p>It's clear that the ensemble model performs better than the individual ones.</p>
+<h3 id="classifying-and-the-yolo-network">Classifying and the YOLO network</h3>
+<p>One extra point of my solution that is worth noting here is the use of <a href="https://pjreddie.com/darknet/yolo/">YOLO network from Darknet</a> for the task of car detection.</p>
+<p>As described in the <a href="#preprocess">preprocess section</a>, the images used for training are taken from the bounding boxes of the original images, i.e. the precise areas that contains the cars only. So in my <em>classify.py</em> file where the classification is actually performed, before an image input is fed through the network for prediction, the bounding box for the car in the image is extracted:</p>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="co"># get the car bounding box</span>
+(x, y, width, height) = detect_bounding_box(image)
+<span class="co"># extract the area which contains the car</span>
+image = image[y:y + height, x:x + width]</code></pre>
+<p>The task of car detection is implemented in the method <em>detect_bounding_box</em> in the file <em>car_detect.py</em> thanks to the use of YOLO network.</p>
+<h2 id="room-for-improvement">Room for Improvement</h2>
+<ul>
+<li><p>As with many other deep learning models, the more data the better. The dataset provided by Stanford has 16,185 images for 196 make and model classes. This is considered &quot;small&quot; data in the world of deep learning. Moreover there are imbalances where some classes are overrepresented (e.g. Audi and BMW) while others (e.g. Tesla) have only a few dozens. Hence one way to improve the performance of the system is to feed more data to the neural networks. This will definitely increase the accuracy of the prediction. Within the time constraint of this challenge, I did not have enough time to collect more data, but this is a key point for future enhancement.</p></li>
+<li><p>In my project I combined three deep learning models into an ensemble, and each model was run with 10 epochs. This could be improved by having more deep learning models (5 to 10 models) for the ensemble and more epochs for each model. Again this was not done due to time and resources constraint.</p></li>
+<li><p>Experiments with more networks. During the course of this project, I experimented with only 2 deep learning networks: VGG16 and ResNet50. There are several other networks such as AlexNet, GoogLeNet, etc. which I did not have time to try. Better performance may be yielded by exploring other networks.</p></li>
+</ul>
