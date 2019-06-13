@@ -119,15 +119,24 @@ such as image resize (224x224), mean subtraction,  etc.
 
 Since 2013 when the Stanford Cars dataset was first introduced, hand-crafted features for classification problems have been
 fade away and replaced by deep learning models. It has been proved that deep learning models have performed
-extremely well such as in the ImageNet Large Scale Visual Recognition Challenge where GoogLeNet and VGGNet was the winner 
+consistently and extremely well such as in the ImageNet Large Scale Visual Recognition Challenge where GoogLeNet and VGGNet was the winner 
 and runner-up respectively in 2014, and ResNet was the winner in 2015. At the moment deep learning is the de-facto choice
 for image classification as well as many other computer vision problems.
 
 In my project I applied the transfer learning method where I re-used an existing pre-trained deep learning network as the starting point for 
-the task of predicting make and model of a car image. I decided to pick out VGG16 and ResNet50 for experiments.
+the task of predicting make and model of a car image. Initially I decided to pick out VGG16 and ResNet50 for experiments.
 
 After playing around with both models, it appeared that the VGG16 performed better ResNet50 for the sake of this task. Therefore
 I discarded the ResNet50 model and continued with VGG16.
+
+The file *myvggnet/myvggnet.py* contains my network model. In the *build* method it initialises the VGG16 network without the 
+fully connected layer. Keras and Tensorflow are used for easy building and training of my network. The first time you
+run it, the VGG16 weights is downloaded automatically if it's not downloaded before. 
+
+As part of transfer learning, all the layers in VGG16 are frozen. After that I put on top my fully connected layer and a 
+*softmax* activation to complete my network. 
+
+The file *myvgg_net_train.py* is responsible for training my model. 
 
 
  
