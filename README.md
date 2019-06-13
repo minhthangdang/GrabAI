@@ -183,7 +183,26 @@ aug = ImageDataGenerator(rotation_range=25, width_shift_range=0.1,
 	horizontal_flip=True, fill_mode="nearest")
 ```
 
+At the beginning I fine-tuned the hyper-parameters (optimizer, number of epochs, learning rate, etc.) for one model only and achieved 
+a decent result (precision and recall were around 0.72 on the test data). However as pointed out by various papers such as 
+[this](https://ieeexplore.ieee.org/document/8404179) and [this](https://arxiv.org/pdf/1704.01664.pdf), ensemble methods can often
+perform better than a single model. *Ensemble* is a technique that combines several models to produce a new model which is
+presumably better than individual ones. There are various methods for ensemble such as unweighted average, weighted average,
+majority voting, stacking, etc. For the sake of simplicity, in this project I created three models of which each uses a different 
+optimizer (Adam, RMSprop and Adagrad). After that an ensemble model is created using unweighted averaging. The code for ensemble 
+is provided in the method *ensemble_models* in the file *myvggnet/myvggnet.py*:
 
+```python
+def ensemble_models(models, model_input):
+    # collect outputs of models in a list
+    y_models = [model(model_input) for model in models]
+    # averaging outputs
+    y_avg = layers.average(y_models)
+    # build model from same input and avg output
+    model_ens = Model(inputs=model_input, outputs=y_avg, name='ensemble')
+
+    return model_ens
+```
 
  
 
