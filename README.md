@@ -92,13 +92,13 @@ of the training process later. For now you can use the myvgg.model file for clas
 
 ### Preparation
 
-The Stanford Cars dataset is accompanied with [devkit](https://ai.stanford.edu/~jkrause/cars/car_devkit.tgz) which includes
+The Stanford Cars dataset is accompanied with a [devkit](https://ai.stanford.edu/~jkrause/cars/car_devkit.tgz) which includes
 the class labels and bounding boxes for all images. These are provided in matlab format and I've converted them into
 CSV files for easy manipulation. These CSV files are located under "annotations" folder where:
 
-* annotations.csv contains the annotations (image path, label id, bounding box coordinates, etc.) for each image.
+* *annotations.csv* contains the annotations (image path, label id, bounding box coordinates, etc.) for each image.
 
-* class_names.csv contains all the class names.
+* *class_names.csv* contains all the class names.
 
 ### Preprocess
 
@@ -116,6 +116,18 @@ such as image resize (224x224), mean subtraction,  etc.
 
 
 ### Feature Engineering
+
+Since 2013 when the Stanford Cars dataset was first introduced, hand-crafted features for classification problems have been
+fade away and replaced by deep learning models. It has been proved that deep learning models have performed
+extremely well such as in the ImageNet Large Scale Visual Recognition Challenge where GoogLeNet and VGGNet was the winner 
+and runner-up respectively in 2014, and ResNet was the winner in 2015. At the moment deep learning is the de-facto choice
+for image classification as well as many other computer vision problems.
+
+In my project I applied the transfer learning method where I re-used an existing pre-trained deep learning network as the starting point for 
+the task of predicting make and model of a car image. I decided to pick out VGG16 and ResNet50 for experiments.
+
+After playing around with both models, it appeared that the VGG16 performed better ResNet50 for the sake of this task. Therefore
+I discarded the ResNet50 model and continued with VGG16.
 
 
  
