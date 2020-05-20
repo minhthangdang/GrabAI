@@ -4,6 +4,12 @@
 
 This project is created as a submission for the [Grab AI's Computer Vision Challenge 2019](https://www.aiforsea.com/computer-vision)
 
+## Outcome
+
+This is one of the top 50 best projects in the Grab AI Challenge 2019 (among 1200 participants):
+
+![Grab AI Result](https://github.com/minhthangdang/minhthangdang.github.io/blob/master/grabai-result.jpg?raw=true)
+
 ## Problem Statement
 
 Given a [dataset](https://ai.stanford.edu/~jkrause/cars/car_dataset.html) of distinct car images , can you automatically recognize the car model and make?
